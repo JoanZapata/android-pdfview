@@ -1,9 +1,11 @@
-How to use :
+# How to use
 
 **1 - Build it**
 
 ```git clone git://github.com/JoanZap/android-pdfview.git```
+
 ```cd android-pdfview```
+
 ```mvn clean install```
 
 **2 - Include it in your pom.xml**
