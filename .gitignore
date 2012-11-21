@@ -1,0 +1,7 @@
+target/
+lint.xml
+gen/*
+bin/
+.settings
+.project
+.classpath
