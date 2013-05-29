@@ -23,5 +23,6 @@
 
     <modules>
         <module>android-pdfview</module>
+        <module>android-pdfview-sample</module>
     </modules>
 </project>
