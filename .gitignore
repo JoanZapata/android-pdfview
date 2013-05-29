@@ -1,10 +1,11 @@
 target/
 lint.xml
-gen/*
 bin/
+gen/
 .settings
 .project
 .classpath
 *.iml
 .idea
 out
+gen-external-apklibs/

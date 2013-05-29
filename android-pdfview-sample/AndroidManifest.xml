@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.joanzapata"
+	package="com.joanzapata.pdfview.sample"
 	android:versionCode="1"
 	android:versionName="1.0" >
 
@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme" 
 		android:label="@string/app_name" >
 		<activity
-			android:name="PDFViewActivity_"
+			android:name="com.joanzapata.PDFViewActivity_"
 			android:label="@string/app_name" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
