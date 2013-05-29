@@ -7,3 +7,4 @@ bin/
 .classpath
 *.iml
 .idea
+out

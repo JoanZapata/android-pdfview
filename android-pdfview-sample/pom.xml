@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+        >
+
+    <parent>
+        <groupId>com.joanzapata</groupId>
+        <artifactId>android-pdfview-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.joanzapata</groupId>
+    <artifactId>android-pdfview-sample</artifactId>
+    <packaging>apk</packaging>
+    <name>android-pdfview-sample</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <scope>provided</scope>
+            <version>${android.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.androidannotations</groupId>
+            <artifactId>androidannotations</artifactId>
+            <version>${androidannotations.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.androidannotations</groupId>
+            <artifactId>androidannotations-api</artifactId>
+            <version>${androidannotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.actionbarsherlock</groupId>
+            <artifactId>actionbarsherlock</artifactId>
+            <version>${actionBarSherlock.version}</version>
+            <type>apklib</type>
+        </dependency>
+        <dependency>
+            <groupId>com.actionbarsherlock</groupId>
+            <artifactId>actionbarsherlock</artifactId>
+            <version>${actionBarSherlock.version}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>${android-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdk>
+                        <platform>${api.platform}</platform>
+                    </sdk>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,24 +1,27 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>fr.jzap.pdfview</groupId>
-	<artifactId>android-pdfview-parent</artifactId>
-	<packaging>pom</packaging>
-	<version>1.0.0</version>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.joanzapata</groupId>
+    <artifactId>android-pdfview-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
 
-	<name>android-pdfview-parent</name>
+    <name>android-pdfview-parent</name>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
-		<java.version>1.6</java.version>
-		<android-maven-plugin.version>3.0.0</android-maven-plugin.version>
-		<android.version>4.1.1.4</android.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
+        <java.version>1.6</java.version>
+        <android-maven-plugin.version>3.0.0</android-maven-plugin.version>
+        <android.version>4.1.1.4</android.version>
+        <api.platform>16</api.platform>
+        <androidannotations.version>2.7</androidannotations.version>
+        <actionBarSherlock.version>4.2.0</actionBarSherlock.version>
+    </properties>
 
-	<modules>
-		<module>android-pdfview</module>
-	</modules>
+    <modules>
+        <module>android-pdfview</module>
+    </modules>
 </project>
