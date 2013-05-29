@@ -19,6 +19,7 @@
         <api.platform>16</api.platform>
         <androidannotations.version>2.7</androidannotations.version>
         <actionBarSherlock.version>4.2.0</actionBarSherlock.version>
+        <password></password>
     </properties>
 
     <modules>
