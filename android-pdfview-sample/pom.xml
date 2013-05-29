@@ -19,6 +19,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.joanzapata</groupId>
+            <artifactId>android-pdfview</artifactId>
+            <version>${project.version}</version>
+            <type>apklib</type>
+        </dependency>
+        <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <scope>provided</scope>
