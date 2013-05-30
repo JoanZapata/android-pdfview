@@ -16,7 +16,7 @@
     <div class="wrapper">
       <header>
         <h1>Android-pdfview</h1>
-        <p>An easy-to-use fast Android PDF reader component</p>
+        <p>A fast PDF reader component for Android development</p>
 
         <p class="view"><a href="https://github.com/JoanZapata/android-pdfview">View the Project on GitHub <small>JoanZapata/android-pdfview</small></a></p>
 
@@ -57,10 +57,7 @@
 <h1>
 <a name="load-a-pdf-file" class="anchor" href="#load-a-pdf-file"><span class="octicon octicon-link"></span></a>Load a PDF file</h1>
 
-<div class="highlight"><pre><span class="n">OnDrawListener</span> <span class="n">onDrawListener</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
-<span class="n">OnPageChangeListener</span> <span class="n">onPageChangeListener</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
-<span class="n">OnLoadCompleteListener</span> <span class="n">onLoadCompleteListener</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
-<span class="n">pdfView</span><span class="o">.</span><span class="na">fromAsset</span><span class="o">(</span><span class="n">pdfName</span><span class="o">)</span>
+<div class="highlight"><pre><span class="n">pdfView</span><span class="o">.</span><span class="na">fromAsset</span><span class="o">(</span><span class="n">pdfName</span><span class="o">)</span>
     <span class="o">.</span><span class="na">pages</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
     <span class="o">.</span><span class="na">defaultPage</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
     <span class="o">.</span><span class="na">showMinimap</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
@@ -100,6 +97,16 @@ limitations under the License.
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-41350833-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
