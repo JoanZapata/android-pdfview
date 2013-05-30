@@ -11,9 +11,6 @@ import static com.joanzapata.pdfview.Constants.Cache.*;
 
 public class CacheManager {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = CacheManager.class.getSimpleName();
-
     private PriorityQueue<PagePart> passiveCache;
 
     private PriorityQueue<PagePart> activeCache;

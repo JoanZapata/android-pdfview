@@ -16,9 +16,6 @@ import static com.joanzapata.pdfview.Constants.Pinch.*;
  */
 public class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapListener {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = DragPinchManager.class.getSimpleName();
-
     private PDFView pdfView;
 
     private DragPinchListener dragPinchListener;

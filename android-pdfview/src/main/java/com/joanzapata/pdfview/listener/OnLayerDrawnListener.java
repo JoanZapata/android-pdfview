@@ -13,9 +13,10 @@ public interface OnLayerDrawnListener {
      * drawing its view.
      * <p/>
      * The page is starting at (0,0)
-     * @param canvas The canvas on which to draw things.
-     * @param width  The width of the current page.
-     * @param height The height of the current page.
+     * @param canvas        The canvas on which to draw things.
+     * @param pageWidth     The width of the current page.
+     * @param pageHeight    The height of the current page.
+     * @param displayedPage The current page index
      */
     void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage);
 }

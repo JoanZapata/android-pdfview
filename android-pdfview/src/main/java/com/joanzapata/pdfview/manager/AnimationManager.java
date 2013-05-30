@@ -19,9 +19,6 @@ import com.joanzapata.pdfview.PDFView;
  */
 public class AnimationManager {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = AnimationManager.class.getSimpleName();
-
     /** PDF View */
     private PDFView pdfView;
 

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
-    private static final String TAG = RenderingAsyncTask.class.getSimpleName();
 
     private DecodeService decodeService;
 
@@ -50,14 +49,12 @@ public class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
                 if (renderingTasks.remove(task)) {
                     publishProgress(part);
                 } else {
-                    Log.i(TAG, "recycle");
                     part.getRenderedBitmap().recycle();
                 }
             }
 
             // Wait for new task, return if canceled
             if (!waitForRenderingTasks() || isCancelled()) {
-                Log.i(TAG, "Cancelled");
                 return null;
             }
 
@@ -99,6 +96,16 @@ public class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
         return part;
     }
 
+    public void removeAllTasks() {
+        renderingTasks.clear();
+    }
+
+    public void wakeUp() {
+        synchronized (renderingTasks) {
+            renderingTasks.notify();
+        }
+    }
+
     private class RenderingTask {
         float width, height;
 
@@ -123,16 +130,6 @@ public class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
             this.cacheOrder = cacheOrder;
         }
 
-    }
-
-    public void removeAllTasks() {
-        renderingTasks.clear();
-    }
-
-    public void wakeUp() {
-        synchronized (renderingTasks) {
-            renderingTasks.notify();
-        }
     }
 
 }

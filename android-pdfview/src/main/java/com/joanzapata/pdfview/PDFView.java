@@ -51,9 +51,6 @@ public class PDFView extends SurfaceView {
     /** Rendered parts go to the cache manager */
     private CacheManager cacheManager;
 
-    /////////////////////////////////////////////////////
-    //////////// Manager
-
     /** Animation manager manage all offset and zoom animation */
     private AnimationManager animationManager;
 
@@ -65,9 +62,6 @@ public class PDFView extends SurfaceView {
      * (ex: 0, 2, 2, 8, 8, 1, 1, 1)
      */
     private int[] originalUserPages;
-
-    /////////////////////////////////////////////////////
-    //////////// PDF stuff
 
     /**
      * The same pages but with a filter to avoid repetition
@@ -122,17 +116,11 @@ public class PDFView extends SurfaceView {
     /** True if the PDFView has been recycled */
     private boolean recycled = true;
 
-    /////////////////////////////////////////////////////
-    //////////// Component state
-
     /** Current state of the view */
     private State state = State.DEFAULT;
 
     /** The VuDroid DecodeService used for decoding PDF and pages */
     private DecodeService decodeService;
-
-    /////////////////////////////////////////////////////
-    //////////// Services
 
     /** Async task used during the loading phase to decode a PDF document */
     private DecodingAsyncTask decodingAsyncTask;
@@ -143,9 +131,6 @@ public class PDFView extends SurfaceView {
     /** Call back object to call when the PDF is loaded */
     private OnLoadCompleteListener onLoadCompleteListener;
 
-    /////////////////////////////////////////////////////
-    //////////// Listeners
-
     /** Call back object to call when the page has changed */
     private OnPageChangedListener onPageChangedListener;
 
@@ -154,9 +139,6 @@ public class PDFView extends SurfaceView {
 
     /** Paint object for drawing */
     private Paint paint;
-
-    /////////////////////////////////////////////////////
-    //////////// Graphical
 
     /** Paint object for drawing mask */
     private Paint maskPaint;
