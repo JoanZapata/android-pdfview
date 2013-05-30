@@ -26,8 +26,7 @@ import static com.joanzapata.pdfview.Constants.Cache.CACHE_SIZE;
 /**
  * @author Joan Zapata
  *         <p/>
- *         This class is the main implementation of IPDFView. It supports
- *         animations, zoom, cache, and swipe.
+ *         It supports animations, zoom, cache, and swipe.
  *         <p/>
  *         To fully understand this class you must know its principles :
  *         - The PDF document is seen as if we always want to draw all the pages.
