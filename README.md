@@ -1,6 +1,6 @@
 ![Screenshot of the sample app](https://raw.github.com/JoanZapata/android-pdfview/master/device.png)
 
-**Android PDFView** is a library which provides a fast PDFView component for Android, with ```animations```, ```gestures```, and ```zoom``.
+**Android PDFView** is a library which provides a fast PDFView component for Android, with ```animations```, ```gestures```, and ```zoom```.
 
 # Get it
 
