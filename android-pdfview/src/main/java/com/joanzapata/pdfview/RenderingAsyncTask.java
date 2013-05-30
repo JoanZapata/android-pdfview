@@ -1,12 +1,10 @@
-package com.joanzapata.pdfview.async;
+package com.joanzapata.pdfview;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.PagePart;
+import com.joanzapata.pdfview.model.PagePart;
 
 import org.vudroid.core.DecodeService;
 import org.vudroid.core.codec.CodecPage;
@@ -14,7 +12,7 @@ import org.vudroid.core.codec.CodecPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
+class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
 
     private DecodeService decodeService;
 

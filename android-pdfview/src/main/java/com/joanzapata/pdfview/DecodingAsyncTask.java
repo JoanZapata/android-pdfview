@@ -1,4 +1,4 @@
-package com.joanzapata.pdfview.async;
+package com.joanzapata.pdfview;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,7 +10,7 @@ import org.vudroid.core.DecodeService;
 import org.vudroid.core.DecodeServiceBase;
 import org.vudroid.pdfdroid.codec.PdfContext;
 
-public class DecodingAsyncTask extends AsyncTask<Void, Void, Void> {
+class DecodingAsyncTask extends AsyncTask<Void, Void, Void> {
 
     /** The decode service used for decoding the PDF */
     private DecodeService decodeService;

@@ -5,6 +5,10 @@ import java.util.List;
 
 public class ArrayUtils {
 
+    private ArrayUtils() {
+        // Prevents instantiation
+    }
+
     /** Transforms (0,1,2,2,3) to (0,1,2,3) */
     public static int[] deleteDuplicatedPages(int[] pages) {
         List<Integer> result = new ArrayList<Integer>();

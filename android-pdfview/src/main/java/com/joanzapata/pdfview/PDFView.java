@@ -7,21 +7,26 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
-import com.joanzapata.pdfview.async.DecodingAsyncTask;
-import com.joanzapata.pdfview.async.RenderingAsyncTask;
-import com.joanzapata.pdfview.listener.OnLayerDrawnListener;
+import com.joanzapata.pdfview.exception.FileNotFoundException;
+import com.joanzapata.pdfview.listener.OnDrawListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
-import com.joanzapata.pdfview.listener.OnPageChangedListener;
+import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.joanzapata.pdfview.manager.AnimationManager;
 import com.joanzapata.pdfview.manager.CacheManager;
 import com.joanzapata.pdfview.manager.DragPinchManager;
 import com.joanzapata.pdfview.manager.SpiralLoopManager;
 import com.joanzapata.pdfview.manager.SpiralLoopManager.SpiralLoopListener;
+import com.joanzapata.pdfview.model.PagePart;
 import com.joanzapata.pdfview.util.ArrayUtils;
+import com.joanzapata.pdfview.util.Constants;
+import com.joanzapata.pdfview.util.FileUtils;
 import com.joanzapata.pdfview.util.NumberUtils;
 import org.vudroid.core.DecodeService;
 
-import static com.joanzapata.pdfview.Constants.Cache.CACHE_SIZE;
+import java.io.File;
+import java.io.IOException;
+
+import static com.joanzapata.pdfview.util.Constants.Cache.CACHE_SIZE;
 
 /**
  * @author Joan Zapata
@@ -44,6 +49,8 @@ import static com.joanzapata.pdfview.Constants.Cache.CACHE_SIZE;
  *         particular case, a userPage of 5 can refer to a documentPage of 17.
  */
 public class PDFView extends SurfaceView {
+
+    private static final String TAG = PDFView.class.getSimpleName();
 
     /** Rendered parts go to the cache manager */
     private CacheManager cacheManager;
@@ -129,10 +136,10 @@ public class PDFView extends SurfaceView {
     private OnLoadCompleteListener onLoadCompleteListener;
 
     /** Call back object to call when the page has changed */
-    private OnPageChangedListener onPageChangedListener;
+    private OnPageChangeListener onPageChangeListener;
 
     /** Call back object to call when the above layer is to drawn */
-    private OnLayerDrawnListener onLayerDrawnListener;
+    private OnDrawListener onDrawListener;
 
     /** Paint object for drawing */
     private Paint paint;
@@ -149,7 +156,7 @@ public class PDFView extends SurfaceView {
     private Paint paintMinimapFront;
 
     /** True if should draw map on the top right corner */
-    private boolean drawMiniMap;
+    private boolean miniMapRequired;
 
     /** Bounds of the minimap */
     private RectF minimapBounds;
@@ -157,10 +164,14 @@ public class PDFView extends SurfaceView {
     /** Bounds of the minimap */
     private RectF minimapScreenBounds;
 
+    private int defaultPage = 0;
+
+    private boolean userWantsMinimap = false;
+
     /** Construct the initial view */
     public PDFView(Context context, AttributeSet set) {
         super(context, set);
-        drawMiniMap = false;
+        miniMapRequired = false;
         cacheManager = new CacheManager();
         animationManager = new AnimationManager(this);
         dragPinchManager = new DragPinchManager(this);
@@ -187,11 +198,11 @@ public class PDFView extends SurfaceView {
         setWillNotDraw(false);
     }
 
-    public void load(Uri uri, OnLoadCompleteListener listener) {
+    private void load(Uri uri, OnLoadCompleteListener listener) {
         load(uri, listener, null);
     }
 
-    public void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, int[] userPages) {
+    private void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, int[] userPages) {
 
         if (!recycled) {
             throw new IllegalStateException("Don't call load on a PDF View without recycling it first.");
@@ -231,25 +242,21 @@ public class PDFView extends SurfaceView {
         animationManager.startXAnimation(currentXOffset, calculateCenterOffsetForPage(pageNb));
         loadPages();
 
-        if (onPageChangedListener != null) {
-            onPageChangedListener.onPageChanged(currentPage);
+        if (onPageChangeListener != null) {
+            onPageChangeListener.onPageChanged(currentPage);
         }
     }
 
-    public void enableSwipe() {
-        dragPinchManager.setSwipeEnabled(true);
+    public void enableSwipe(boolean enableSwipe) {
+        dragPinchManager.setSwipeEnabled(enableSwipe);
     }
 
-    public void disableSwipe() {
-        dragPinchManager.setSwipeEnabled(false);
+    private void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
+        this.onPageChangeListener = onPageChangeListener;
     }
 
-    public void setOnPageChangedListener(OnPageChangedListener onPageChangedListener) {
-        this.onPageChangedListener = onPageChangedListener;
-    }
-
-    public void setOnLayerDrawnListener(OnLayerDrawnListener onLayerDrawnListener) {
-        this.onLayerDrawnListener = onLayerDrawnListener;
+    private void setOnDrawListener(OnDrawListener onDrawListener) {
+        this.onDrawListener = onDrawListener;
     }
 
     public void recycle() {
@@ -336,10 +343,10 @@ public class PDFView extends SurfaceView {
         }
 
         // Draws the user layer
-        if (onLayerDrawnListener != null) {
+        if (onDrawListener != null) {
             canvas.translate(toCurrentScale(currentFilteredPage * optimalPageWidth), 0);
 
-            onLayerDrawnListener.onLayerDrawn(canvas, //
+            onDrawListener.onLayerDrawn(canvas, //
                     toCurrentScale(optimalPageWidth), //
                     toCurrentScale(optimalPageHeight),
                     currentPage);
@@ -355,7 +362,7 @@ public class PDFView extends SurfaceView {
         canvas.drawRect(rightMask, maskPaint);
 
         // If minimap shown draws it
-        if (drawMiniMap) {
+        if (userWantsMinimap && miniMapRequired) {
             drawMiniMap(canvas);
         }
     }
@@ -593,6 +600,7 @@ public class PDFView extends SurfaceView {
         calculateOptimalWidthAndHeight();
 
         // Notify the listener
+        showPage(defaultPage);
         onLoadCompleteListener.loadComplete(documentPageCount);
     }
 
@@ -696,7 +704,7 @@ public class PDFView extends SurfaceView {
         }
 
         if (zoom == 1f) {
-            drawMiniMap = false;
+            miniMapRequired = false;
         } else {
             // Calculates the bounds of the current displayed area
             float x = (-currentXOffset - toCurrentScale(currentFilteredPage * optimalPageWidth)) //
@@ -707,7 +715,7 @@ public class PDFView extends SurfaceView {
             minimapScreenBounds = new RectF(minimapBounds.left + x, minimapBounds.top + y, //
                     minimapBounds.left + x + width, minimapBounds.top + y + height);
             minimapScreenBounds.intersect(minimapBounds);
-            drawMiniMap = true;
+            miniMapRequired = true;
         }
     }
 
@@ -739,10 +747,10 @@ public class PDFView extends SurfaceView {
         // Check X offset
         if (isZooming()) {
             if (toCurrentScale(optimalPageWidth) < getWidth()) {
-                drawMiniMap = false;
+                miniMapRequired = false;
                 offsetX = getWidth() / 2 - toCurrentScale((currentFilteredPage + 0.5f) * optimalPageWidth);
             } else {
-                drawMiniMap = true;
+                miniMapRequired = true;
                 if (offsetX + toCurrentScale(currentFilteredPage * optimalPageWidth) > 0) {
                     offsetX = -toCurrentScale(currentFilteredPage * optimalPageWidth);
                 } else if (offsetX + toCurrentScale((currentFilteredPage + 1) * optimalPageWidth) < getWidth()) {
@@ -829,7 +837,7 @@ public class PDFView extends SurfaceView {
         return zoom;
     }
 
-    public DecodeService getDecodeService() {
+    DecodeService getDecodeService() {
         return decodeService;
     }
 
@@ -841,6 +849,14 @@ public class PDFView extends SurfaceView {
         return optimalPageWidth;
     }
 
+    private void setUserWantsMinimap(boolean userWantsMinimap) {
+        this.userWantsMinimap = userWantsMinimap;
+    }
+
+    private void setDefaultPage(int defaultPage) {
+        this.defaultPage = defaultPage;
+    }
+
     public void resetZoom() {
         zoomTo(1);
     }
@@ -849,5 +865,86 @@ public class PDFView extends SurfaceView {
         animationManager.startZoomAnimation(zoom, 1f);
     }
 
+    /** Use an asset file as the pdf source */
+    public Configurator fromAsset(String assetName) {
+        try {
+            File pdfFile = FileUtils.fileFromAsset(getContext(), assetName);
+            return new Configurator(Uri.fromFile(pdfFile));
+        } catch (IOException e) {
+            throw new FileNotFoundException(assetName + " not found.", e);
+        }
+    }
+
     private enum State {DEFAULT, LOADED, SHOWN}
+
+    public class Configurator {
+
+        private final Uri uri;
+
+        private int[] pageNumbers = null;
+
+        private boolean enableSwipe = true;
+
+        private OnDrawListener onDrawListener;
+
+        private OnLoadCompleteListener onLoadCompleteListener;
+
+        private OnPageChangeListener onPageChangeListener;
+
+        private int defaultPage = 0;
+
+        private boolean showMinimap = false;
+
+        private Configurator(Uri uri) {
+            this.uri = uri;
+        }
+
+        public Configurator pages(int... pageNumbers) {
+            this.pageNumbers = pageNumbers;
+            return this;
+        }
+
+        public Configurator enableSwipe(boolean enableSwipe) {
+            this.enableSwipe = enableSwipe;
+            return this;
+        }
+
+        public Configurator onDraw(OnDrawListener onDrawListener) {
+            this.onDrawListener = onDrawListener;
+            return this;
+        }
+
+        public Configurator onLoad(OnLoadCompleteListener onLoadCompleteListener) {
+            this.onLoadCompleteListener = onLoadCompleteListener;
+            return this;
+        }
+
+        public Configurator onPageChange(OnPageChangeListener onPageChangeListener) {
+            this.onPageChangeListener = onPageChangeListener;
+            return this;
+        }
+
+        public Configurator defaultPage(int defaultPage) {
+            this.defaultPage = defaultPage;
+            return this;
+        }
+
+        public void load() {
+            PDFView.this.setOnDrawListener(onDrawListener);
+            PDFView.this.setOnPageChangeListener(onPageChangeListener);
+            PDFView.this.enableSwipe(enableSwipe);
+            PDFView.this.setDefaultPage(defaultPage);
+            PDFView.this.setUserWantsMinimap(showMinimap);
+            if (pageNumbers != null) {
+                PDFView.this.load(uri, onLoadCompleteListener, pageNumbers);
+            } else {
+                PDFView.this.load(uri, onLoadCompleteListener);
+            }
+        }
+
+        public Configurator showMinimap(boolean showMinimap) {
+            this.showMinimap = showMinimap;
+            return this;
+        }
+    }
 }

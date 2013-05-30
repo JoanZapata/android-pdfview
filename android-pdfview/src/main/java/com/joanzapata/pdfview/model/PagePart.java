@@ -1,4 +1,4 @@
-package com.joanzapata.pdfview;
+package com.joanzapata.pdfview.model;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;

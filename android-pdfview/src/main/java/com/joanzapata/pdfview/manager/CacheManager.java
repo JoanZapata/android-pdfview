@@ -1,13 +1,13 @@
 package com.joanzapata.pdfview.manager;
 
 import android.graphics.RectF;
-import com.joanzapata.pdfview.PagePart;
+import com.joanzapata.pdfview.model.PagePart;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
-import static com.joanzapata.pdfview.Constants.Cache.*;
+import static com.joanzapata.pdfview.util.Constants.Cache.*;
 
 public class CacheManager {
 

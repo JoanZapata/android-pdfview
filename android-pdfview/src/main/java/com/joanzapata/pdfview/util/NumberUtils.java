@@ -2,6 +2,10 @@ package com.joanzapata.pdfview.util;
 
 public class NumberUtils {
 
+    private NumberUtils() {
+        // Prevents instantiation
+    }
+
     /**
      * Limits the given <b>number</b> between the other values
      * @param number  The number to limit.

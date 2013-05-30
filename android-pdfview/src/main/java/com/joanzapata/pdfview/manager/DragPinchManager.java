@@ -7,7 +7,7 @@ import com.joanzapata.pdfview.util.DragPinchListener.OnDoubleTapListener;
 import com.joanzapata.pdfview.util.DragPinchListener.OnDragListener;
 import com.joanzapata.pdfview.util.DragPinchListener.OnPinchListener;
 
-import static com.joanzapata.pdfview.Constants.Pinch.*;
+import static com.joanzapata.pdfview.util.Constants.Pinch.*;
 
 /**
  * @author Joan Zapata

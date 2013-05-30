@@ -1,4 +1,4 @@
-package com.joanzapata.pdfview;
+package com.joanzapata.pdfview.util;
 
 public interface Constants {
 
