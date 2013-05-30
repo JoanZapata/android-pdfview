@@ -1,63 +1,44 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Android-pdfview : An easy-to-use Android PDFView component with swipe and zoom" />
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Android-pdfview by JoanZapata</title>
+    <title>Android-pdfview</title>
   </head>
 
   <body>
-    <a id="forkme_banner" href="https://github.com/JoanZapata/android-pdfview">View on GitHub</a>
-    <div class="shell">
 
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Android-pdfview</h1>
-            <h2>An easy-to-use Android PDFView component with swipe and zoom</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/JoanZapata/android-pdfview">View on GitHub</a>
 
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/JoanZapata/android-pdfview/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/JoanZapata/android-pdfview/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
+          <h1 id="project_title">Android-pdfview</h1>
+          <h2 id="project_tagline">An easy-to-use Android PDFView component with swipe and zoom</h2>
 
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/JoanZapata/android-pdfview/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/JoanZapata/android-pdfview/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-      <span class="banner-fix"></span>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><img src="device.png" alt="Screenshot of the sample app"></p>
 
+<p><strong>Android PDFView</strong> is a library which provides a fast PDFView component for Android, with <code>animations</code>, <code>gestures</code>, and `<code>zoom</code>.</p>
 
-      <section id="main_content">
-        <h1>
-<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h1>
+<h1>
+<a name="get-it" class="anchor" href="#get-it"><span class="octicon octicon-link"></span></a>Get it</h1>
 
-<p><strong>1 - Build it</strong></p>
-
-<p><code>git clone git://github.com/JoanZap/android-pdfview.git</code></p>
-
-<p><code>cd android-pdfview</code></p>
-
-<p><code>mvn clean install</code></p>
-
-<p><strong>2 - Include it in your pom.xml</strong></p>
+<p>Android PDFView is <strong>available in Maven Central</strong>.</p>
 
 <div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>com.joanzapata.pdfview<span class="nt">&lt;/groupId&gt;</span>
@@ -67,7 +48,8 @@
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 
-<p><strong>3 - Include PDFView in your layout</strong></p>
+<h1>
+<a name="include-pdfview-in-your-layout" class="anchor" href="#include-pdfview-in-your-layout"><span class="octicon octicon-link"></span></a>Include PDFView in your layout</h1>
 
 <div class="highlight"><pre><span class="nt">&lt;fr.jzap.pdfview.impl.PDFView</span>
         <span class="na">android:id=</span><span class="s">"@+id/pdfview"</span>
@@ -75,37 +57,57 @@
         <span class="na">android:layout_height=</span><span class="s">"match_parent"</span><span class="nt">/&gt;</span>
 </pre></div>
 
-<p><strong>4 - Load a pdf file and display the first page</strong></p>
+<h1>
+<a name="load-a-pdf-file" class="anchor" href="#load-a-pdf-file"><span class="octicon octicon-link"></span></a>Load a PDF file</h1>
 
 <div class="highlight"><pre><span class="n">OnDrawListener</span> <span class="n">onDrawListener</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
 <span class="n">OnPageChangeListener</span> <span class="n">onPageChangeListener</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
 <span class="n">OnLoadCompleteListener</span> <span class="n">onLoadCompleteListener</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
 <span class="n">pdfView</span><span class="o">.</span><span class="na">fromAsset</span><span class="o">(</span><span class="n">pdfName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">pages</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span> <span class="c1">// default: Original pages</span>
-    <span class="o">.</span><span class="na">defaultPage</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="c1">// default: 0</span>
-    <span class="o">.</span><span class="na">showMinimap</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span> <span class="c1">// default: false</span>
-    <span class="o">.</span><span class="na">enableSwipe</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="c1">// default: true</span>
-    <span class="o">.</span><span class="na">onDraw</span><span class="o">(</span><span class="n">onDrawListener</span><span class="o">)</span> <span class="c1">// default: null</span>
-    <span class="o">.</span><span class="na">onLoad</span><span class="o">(</span><span class="n">onLoadCompleteListener</span><span class="o">)</span> <span class="c1">// default: null</span>
-    <span class="o">.</span><span class="na">onPageChange</span><span class="o">(</span><span class="n">onPageChangeListener</span><span class="o">)</span> <span class="c1">// default: null</span>
-    <span class="o">.</span><span class="na">load</span><span class="o">();</span> <span class="c1">// Start decoding the PDF file</span>
+    <span class="o">.</span><span class="na">pages</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">defaultPage</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">showMinimap</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">enableSwipe</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">onDraw</span><span class="o">(</span><span class="n">onDrawListener</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">onLoad</span><span class="o">(</span><span class="n">onLoadCompleteListener</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">onPageChange</span><span class="o">(</span><span class="n">onPageChangeListener</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">load</span><span class="o">();</span>
 </pre></div>
+
+<ul>
+<li>
+<code>pages</code> is optional, it allows you to filter and order the pages of the PDF as you need</li>
+<li>
+<code>onDraw</code> is also optional, and allows you to draw something on a provided canvas, above the current page</li>
+</ul><h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
+
+<pre><code>Copyright 2013 Joan Zapata
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
       </section>
+    </div>
 
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/JoanZapata">JoanZapata</a> can be found on <a href="https://github.com/JoanZapata/android-pdfview">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Android-pdfview maintained by <a href="https://github.com/JoanZapata">JoanZapata</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
-
     </div>
 
     
+
   </body>
 </html>
