@@ -1,4 +1,4 @@
-package com.joanzapata.pdfview.manager;
+package com.joanzapata.pdfview;
 
 /**
  * This class allows to run a loop like :
@@ -27,7 +27,7 @@ package com.joanzapata.pdfview.manager;
  * }).startLoop(5, 5, 2, 2);
  * </pre>
  */
-public class SpiralLoopManager {
+class SpiralLoopManager {
 
     public static interface SpiralLoopListener {
         /**

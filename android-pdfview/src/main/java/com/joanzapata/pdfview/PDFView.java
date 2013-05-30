@@ -11,11 +11,6 @@ import com.joanzapata.pdfview.exception.FileNotFoundException;
 import com.joanzapata.pdfview.listener.OnDrawListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
-import com.joanzapata.pdfview.manager.AnimationManager;
-import com.joanzapata.pdfview.manager.CacheManager;
-import com.joanzapata.pdfview.manager.DragPinchManager;
-import com.joanzapata.pdfview.manager.SpiralLoopManager;
-import com.joanzapata.pdfview.manager.SpiralLoopManager.SpiralLoopListener;
 import com.joanzapata.pdfview.model.PagePart;
 import com.joanzapata.pdfview.util.ArrayUtils;
 import com.joanzapata.pdfview.util.Constants;
@@ -175,8 +170,6 @@ public class PDFView extends SurfaceView {
         cacheManager = new CacheManager();
         animationManager = new AnimationManager(this);
         dragPinchManager = new DragPinchManager(this);
-        renderingAsyncTask = new RenderingAsyncTask(this);
-        renderingAsyncTask.execute();
 
         paint = new Paint();
         debugPaint = new Paint();
@@ -220,9 +213,20 @@ public class PDFView extends SurfaceView {
         // Start decoding document
         decodingAsyncTask = new DecodingAsyncTask(uri, this);
         decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        renderingAsyncTask = new RenderingAsyncTask(this);
+        renderingAsyncTask.execute();
     }
 
-    public void showPage(int pageNb) {
+    /**
+     * Go to the given page.
+     * @param page Page number starting from 1.
+     */
+    public void jumpTo(int page) {
+        showPage(page - 1);
+    }
+
+    void showPage(int pageNb) {
         state = State.SHOWN;
 
         // Check the page number and makes the
@@ -243,8 +247,15 @@ public class PDFView extends SurfaceView {
         loadPages();
 
         if (onPageChangeListener != null) {
-            onPageChangeListener.onPageChanged(currentPage);
+            onPageChangeListener.onPageChanged(currentPage + 1, getPageCount());
         }
+    }
+
+    public int getPageCount() {
+        if (originalUserPages != null) {
+            return originalUserPages.length;
+        }
+        return documentPageCount;
     }
 
     public void enableSwipe(boolean enableSwipe) {
@@ -529,7 +540,7 @@ public class PDFView extends SurfaceView {
         startingCol = NumberUtils.limit(startingCol, 0, nbCols);
 
         // Prepare the loop listener
-        class SpiralLoopListenerImpl implements SpiralLoopListener {
+        class SpiralLoopListenerImpl implements SpiralLoopManager.SpiralLoopListener {
             int nbItemTreated = 0;
 
             @Override
@@ -600,8 +611,10 @@ public class PDFView extends SurfaceView {
         calculateOptimalWidthAndHeight();
 
         // Notify the listener
-        showPage(defaultPage);
-        onLoadCompleteListener.loadComplete(documentPageCount);
+        jumpTo(defaultPage);
+        if (onLoadCompleteListener != null) {
+            onLoadCompleteListener.loadComplete(documentPageCount);
+        }
     }
 
     /**
@@ -891,7 +904,7 @@ public class PDFView extends SurfaceView {
 
         private OnPageChangeListener onPageChangeListener;
 
-        private int defaultPage = 0;
+        private int defaultPage = 1;
 
         private boolean showMinimap = false;
 
@@ -930,6 +943,7 @@ public class PDFView extends SurfaceView {
         }
 
         public void load() {
+            PDFView.this.recycle();
             PDFView.this.setOnDrawListener(onDrawListener);
             PDFView.this.setOnPageChangeListener(onPageChangeListener);
             PDFView.this.enableSwipe(enableSwipe);

@@ -1,4 +1,4 @@
-package com.joanzapata.pdfview.manager;
+package com.joanzapata.pdfview;
 
 import android.graphics.PointF;
 import com.joanzapata.pdfview.PDFView;
@@ -14,7 +14,7 @@ import static com.joanzapata.pdfview.util.Constants.Pinch.*;
  *         This Manager takes care of moving the PDFView,
  *         set its zoom track user actions.
  */
-public class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapListener {
+class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapListener {
 
     private PDFView pdfView;
 

@@ -1,4 +1,4 @@
-package com.joanzapata.pdfview.manager;
+package com.joanzapata.pdfview;
 
 import android.graphics.RectF;
 import com.joanzapata.pdfview.model.PagePart;
@@ -9,7 +9,7 @@ import java.util.Vector;
 
 import static com.joanzapata.pdfview.util.Constants.Cache.*;
 
-public class CacheManager {
+class CacheManager {
 
     private PriorityQueue<PagePart> passiveCache;
 
@@ -111,9 +111,13 @@ public class CacheManager {
         for (PagePart part : activeCache) {
             part.getRenderedBitmap().recycle();
         }
+        for (PagePart part : activeCache) {
+            part.getRenderedBitmap().recycle();
+        }
         for (PagePart part : thumbnails) {
             part.getRenderedBitmap().recycle();
         }
+        passiveCache.clear();
         activeCache.clear();
         thumbnails.clear();
     }

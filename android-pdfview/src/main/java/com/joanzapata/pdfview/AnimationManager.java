@@ -1,4 +1,4 @@
-package com.joanzapata.pdfview.manager;
+package com.joanzapata.pdfview;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -17,7 +17,7 @@ import com.joanzapata.pdfview.PDFView;
  *         an animation, and call moveTo() on the PDFView as a result
  *         of each animation update.
  */
-public class AnimationManager {
+class AnimationManager {
 
     /** PDF View */
     private PDFView pdfView;
