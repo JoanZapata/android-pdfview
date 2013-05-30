@@ -18,7 +18,7 @@ Android PDFView is **available in Maven Central**.
 # Include PDFView in your layout
 
 ```xml
-<fr.jzap.pdfview.impl.PDFView
+<com.joanzapata.pdfview.PDFView
         android:id="@+id/pdfview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
