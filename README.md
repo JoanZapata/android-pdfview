@@ -1,14 +1,12 @@
-# How to use
+# Android PDFView
 
-## Build it
+![Screenshot of the sample app](device.png)
 
-```git clone git://github.com/JoanZap/android-pdfview.git```
+**Android PDFView** is a library which provides a fast PDFView component for Android, with ```animations```, ```gestures```, and ```zoom``.
 
-```cd android-pdfview```
+## Get it
 
-```mvn clean install```
-
-## Include it in your pom.xml
+Android PDFView is **available in Maven Central**.
 
 ```xml
 <dependency>
@@ -28,22 +26,25 @@
         android:layout_height="match_parent"/>
 ```
 
-## Load a pdf file and display the first page
+## Load a PDF file
 
 ```java
 OnDrawListener onDrawListener = this;
 OnPageChangeListener onPageChangeListener = this;
 OnLoadCompleteListener onLoadCompleteListener = this;
 pdfView.fromAsset(pdfName)
-    .pages(0, 2, 1, 3) // default: Original pages
-    .defaultPage(0) // default: 0
-    .showMinimap(false) // default: false
-    .enableSwipe(true) // default: true
-    .onDraw(onDrawListener) // default: null
-    .onLoad(onLoadCompleteListener) // default: null
-    .onPageChange(onPageChangeListener) // default: null
-    .load(); // Start decoding the PDF file
+    .pages(0, 2, 1, 3, 3, 3)
+    .defaultPage(1)
+    .showMinimap(false)
+    .enableSwipe(true)
+    .onDraw(onDrawListener)
+    .onLoad(onLoadCompleteListener)
+    .onPageChange(onPageChangeListener)
+    .load();
 ```
+
+* ```pages``` is optional, it allows you to filter and order the pages of the PDF as you need
+* ```onDraw``` is also optional, and allows you to draw something on a provided canvas, above the current page
 
 ## License
 
