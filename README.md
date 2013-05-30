@@ -1,10 +1,8 @@
-# Android PDFView
-
-![Screenshot of the sample app](device.png)
+![Screenshot of the sample app](https://raw.github.com/JoanZapata/android-pdfview/master/device.png)
 
 **Android PDFView** is a library which provides a fast PDFView component for Android, with ```animations```, ```gestures```, and ```zoom``.
 
-## Get it
+# Get it
 
 Android PDFView is **available in Maven Central**.
 
@@ -17,7 +15,7 @@ Android PDFView is **available in Maven Central**.
 </dependency>
 ```
 
-## Include PDFView in your layout
+# Include PDFView in your layout
 
 ```xml
 <fr.jzap.pdfview.impl.PDFView
@@ -26,7 +24,7 @@ Android PDFView is **available in Maven Central**.
         android:layout_height="match_parent"/>
 ```
 
-## Load a PDF file
+# Load a PDF file
 
 ```java
 OnDrawListener onDrawListener = this;
@@ -46,7 +44,7 @@ pdfView.fromAsset(pdfName)
 * ```pages``` is optional, it allows you to filter and order the pages of the PDF as you need
 * ```onDraw``` is also optional, and allows you to draw something on a provided canvas, above the current page
 
-## License
+# License
 
 ```
 Copyright 2013 Joan Zapata
