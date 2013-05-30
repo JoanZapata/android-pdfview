@@ -12,7 +12,7 @@
 
 ```xml
 <dependency>
-	<groupId>fr.jzap.pdfview</groupId>
+	<groupId>com.joanzapata.pdfview</groupId>
 	<artifactId>android-pdfview</artifactId>
 	<version>1.0.0</version>
 	<type>apklib</type>
@@ -31,13 +31,17 @@
 **4 - Load a pdf file and display the first page**
 
 ```java
-final IPDFView pdfView = (IPDFView) findViewById(R.id.pdfview);
-Uri fromFile = Uri.parse("file:///mnt/sdcard/sample.pdf");
-pdfView.enableSwipe();
-pdfView.load(fromFile, new OnLoadCompleteListener() {
-     public void loadComplete(int arg0) {
-	pdfView.showPage(0);
-     }
-});
+OnDrawListener onDrawListener = this;
+OnPageChangeListener onPageChangeListener = this;
+OnLoadCompleteListener onLoadCompleteListener = this;
+pdfView.fromAsset(pdfName)
+    .pages(0, 2, 1, 3) // default: Original pages
+    .defaultPage(0) // default: 0
+    .showMinimap(false) // default: false
+    .enableSwipe(true) // default: true
+    .onDraw(onDrawListener) // default: null
+    .onLoad(onLoadCompleteListener) // default: null
+    .onPageChange(onPageChangeListener) // default: null
+    .load(); // Start decoding the PDF file
 ```
 

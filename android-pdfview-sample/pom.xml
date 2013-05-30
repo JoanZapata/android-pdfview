@@ -3,20 +3,20 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>com.joanzapata</groupId>
+        <groupId>com.joanzapata.pdfview</groupId>
         <artifactId>android-pdfview-parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.joanzapata</groupId>
+    <groupId>com.joanzapata.pdfview</groupId>
     <artifactId>android-pdfview-sample</artifactId>
     <packaging>apk</packaging>
     <name>android-pdfview-sample</name>
 
     <dependencies>
         <dependency>
-            <groupId>com.joanzapata</groupId>
+            <groupId>com.joanzapata.pdfview</groupId>
             <artifactId>android-pdfview</artifactId>
             <version>${project.version}</version>
             <type>apklib</type>
