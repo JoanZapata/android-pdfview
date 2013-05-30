@@ -1,6 +1,6 @@
 # How to use
 
-**1 - Build it**
+## Build it
 
 ```git clone git://github.com/JoanZap/android-pdfview.git```
 
@@ -8,7 +8,7 @@
 
 ```mvn clean install```
 
-**2 - Include it in your pom.xml**
+## Include it in your pom.xml
 
 ```xml
 <dependency>
@@ -19,7 +19,7 @@
 </dependency>
 ```
 
-**3 - Include PDFView in your layout**
+## Include PDFView in your layout
 
 ```xml
 <fr.jzap.pdfview.impl.PDFView
@@ -28,7 +28,7 @@
         android:layout_height="match_parent"/>
 ```
 
-**4 - Load a pdf file and display the first page**
+## Load a pdf file and display the first page
 
 ```java
 OnDrawListener onDrawListener = this;
@@ -45,3 +45,20 @@ pdfView.fromAsset(pdfName)
     .load(); // Start decoding the PDF file
 ```
 
+## License
+
+```
+Copyright 2013 Joan Zapata
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

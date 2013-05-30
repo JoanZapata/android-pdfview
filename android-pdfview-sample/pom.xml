@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.joanzapata.pdfview</groupId>
         <artifactId>android-pdfview-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -58,21 +58,9 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>${android-maven-plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <sdk>
-                        <platform>${api.platform}</platform>
-                    </sdk>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -85,7 +73,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jarsigner-plugin</artifactId>
-                        <version>1.2</version>
+                        <version>${maven-jarsigner.version}</version>
                         <executions>
                             <execution>
                                 <id>signing</id>
