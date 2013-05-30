@@ -1,4 +1,4 @@
-![Screenshot of the sample app](https://raw.github.com/JoanZapata/android-pdfview/master/device.png)
+[![Screenshot of the sample app](https://raw.github.com/JoanZapata/android-pdfview/master/device.png)](https://play.google.com/store/apps/details?id=com.joanzapata.pdfview.sample)
 
 **Android PDFView** is a library which provides a fast PDFView component for Android, with ```animations```, ```gestures```, and ```zoom```.
 
