@@ -9,8 +9,8 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.joanzapata.pdfview.sample.R;
-import fr.jzap.pdfview.impl.PDFView;
-import fr.jzap.pdfview.listener.OnLoadCompleteListener;
+import com.joanzapata.pdfview.PDFView;
+import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 
 import java.io.*;
 
@@ -24,6 +24,9 @@ public class PDFViewActivity extends SherlockActivity {
 
     @AfterViews
     void afterViews() {
+
+//        pdfView.loadComplete("sample.pdf");
+//        pdfView.open
         try {
             File pdfFile = new File(getFilesDir(), "sample.pdf");
             if (!pdfFile.exists()) {

@@ -9,3 +9,4 @@ gen/
 .idea
 out
 gen-external-apklibs/
+classes/
