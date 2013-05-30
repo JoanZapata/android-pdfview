@@ -45,9 +45,6 @@ import static com.joanzapata.pdfview.Constants.Cache.CACHE_SIZE;
  */
 public class PDFView extends SurfaceView {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = PDFView.class.getSimpleName();
-
     /** Rendered parts go to the cache manager */
     private CacheManager cacheManager;
 

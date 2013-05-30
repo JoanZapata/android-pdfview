@@ -28,11 +28,6 @@ public class DecodingAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPreExecute() {
-        Log.i("Joan", "Will be decoding...");
-    }
-
-    @Override
     protected Void doInBackground(Void... params) {
         decodeService = new DecodeServiceBase(new PdfContext());
         decodeService.setContentResolver(pdfView.getContext().getContentResolver());
