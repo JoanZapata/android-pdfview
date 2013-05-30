@@ -1,65 +1,71 @@
 
 package com.joanzapata;
 
-import android.graphics.Canvas;
-import android.net.Uri;
+import android.content.Intent;
 import android.util.Log;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ViewById;
-import com.joanzapata.pdfview.listener.OnDrawListener;
+import com.googlecode.androidannotations.annotations.*;
+import com.joanzapata.pdfview.PDFView;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.joanzapata.pdfview.sample.R;
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 
-import java.io.*;
+import static java.lang.String.format;
 
 @EActivity(R.layout.activity_main)
-public class PDFViewActivity extends SherlockActivity implements OnPageChangeListener, OnDrawListener, OnLoadCompleteListener {
+@OptionsMenu(R.menu.actionbar)
+public class PDFViewActivity extends SherlockActivity implements OnPageChangeListener {
 
-    private static final String TAG = PDFViewActivity.class.getSimpleName();
+    public static final String SAMPLE_FILE = "sample.pdf";
+
+    public static final String ABOUT_FILE = "about.pdf";
 
     @ViewById
     PDFView pdfView;
 
+    @NonConfigurationInstance
+    String pdfName = SAMPLE_FILE;
+
+    @NonConfigurationInstance
+    Integer pageNumber = 1;
+
     @AfterViews
     void afterViews() {
-        OnDrawListener onDrawListener = this;
-        OnPageChangeListener onPageChangeListener = this;
-        OnLoadCompleteListener onLoadCompleteListener = this;
+        display(pdfName, false);
+    }
 
-        pdfView.fromAsset("sample.pdf")
-                .pages(0, 2, 1, 3)
-                .defaultPage(0)
-                .showMinimap(false)
-                .enableSwipe(true)
-                .onDraw(onDrawListener)
-                .onLoad(onLoadCompleteListener)
-                .onPageChange(onPageChangeListener)
+    @OptionsItem
+    public void about() {
+        if (!displaying(ABOUT_FILE))
+            display(ABOUT_FILE, true);
+    }
+
+    private void display(String assetFileName, boolean jumpToFirstPage) {
+        if (jumpToFirstPage) pageNumber = 1;
+        setTitle(pdfName = assetFileName);
+
+        pdfView.fromAsset(assetFileName)
+                .defaultPage(pageNumber)
+                .onPageChange(this)
                 .load();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater();
-        return true;
+    public void onPageChanged(int page, int pageCount) {
+        pageNumber = page;
+        setTitle(format("%s %s / %s", pdfName, page, pageCount));
     }
 
     @Override
-    public void onPageChanged(int page) {
-        Log.i(TAG, "Page changed to " + page);
+    public void onBackPressed() {
+        if (ABOUT_FILE.equals(pdfName)) {
+            display(SAMPLE_FILE, true);
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    @Override
-    public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-        Log.i(TAG, "Layer drawn");
-    }
-
-    @Override
-    public void loadComplete(int nbPages) {
-        Log.i(TAG, "Load complete");
+    private boolean displaying(String fileName) {
+        return fileName.equals(pdfName);
     }
 }
