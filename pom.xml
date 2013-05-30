@@ -13,7 +13,7 @@
     <name>Android PDFView parent</name>
     <description>An easy-to-use Android PDFView component with swipe and zoom</description>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <url>http://joanzapata.com/android-pdfview/</url>
     <inceptionYear>2013</inceptionYear>
 
