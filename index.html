@@ -1,51 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
-
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
-
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
     <title>Android-pdfview by JoanZapata</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
-    <a id="forkme_banner" href="https://github.com/JoanZapata/android-pdfview">View on GitHub</a>
-    <div class="shell">
-
+    <div class="wrapper">
       <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Android-pdfview</h1>
-            <h2>An easy-to-use fast Android PDFView component with animations, swipe and zoom</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
+        <h1>Android-pdfview</h1>
+        <p>An easy-to-use fast Android PDF reader component</p>
+
+        <p class="view"><a href="https://github.com/JoanZapata/android-pdfview">View the Project on GitHub <small>JoanZapata/android-pdfview</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/JoanZapata/android-pdfview/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/JoanZapata/android-pdfview/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/JoanZapata/android-pdfview">View On <strong>GitHub</strong></a></li>
+        </ul>
       </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/JoanZapata/android-pdfview/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/JoanZapata/android-pdfview/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
+      <section>
         <p><img src="https://raw.github.com/JoanZapata/android-pdfview/master/device.png" alt="Screenshot of the sample app"></p>
 
 <p><strong>Android PDFView</strong> is a library which provides a fast PDFView component for Android, with <code>animations</code>, <code>gestures</code>, and `<code>zoom</code>.</p>
@@ -66,7 +48,7 @@
 <h1>
 <a name="include-pdfview-in-your-layout" class="anchor" href="#include-pdfview-in-your-layout"><span class="octicon octicon-link"></span></a>Include PDFView in your layout</h1>
 
-<div class="highlight"><pre><span class="nt">&lt;fr.jzap.pdfview.impl.PDFView</span>
+<div class="highlight"><pre><span class="nt">&lt;com.joanzapata.pdfview.PDFView</span>
         <span class="na">android:id=</span><span class="s">"@+id/pdfview"</span>
         <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
         <span class="na">android:layout_height=</span><span class="s">"match_parent"</span><span class="nt">/&gt;</span>
@@ -112,21 +94,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </code></pre>
       </section>
-
       <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/JoanZapata">JoanZapata</a> can be found on <a href="https://github.com/JoanZapata/android-pdfview">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
+        <p>This project is maintained by <a href="https://github.com/JoanZapata">JoanZapata</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
-
     </div>
-
+    <script src="javascripts/scale.fix.js"></script>
     
   </body>
 </html>
