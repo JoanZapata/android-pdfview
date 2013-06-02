@@ -89,13 +89,14 @@
                 <artifactId>maven-license-plugin</artifactId>
                 <version>${maven-license.version}</version>
                 <configuration>
-                    <header>LICENCE.txt</header>
+                    <header>HEADER.txt</header>
                     <excludes>
                         <exclude>**/.idea/**</exclude>
                         <exclude>**/vudroid/**</exclude>
                         <exclude>**/libs/**</exclude>
                         <exclude>**/*.iml</exclude>
                         <exclude>LICENSE.txt</exclude>
+                        <exclude>HEADER.txt</exclude>
                         <exclude>RELEASE.md</exclude>
                         <exclude>**/.gitignore</exclude>
                         <exclude>README.md</exclude>
