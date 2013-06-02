@@ -900,10 +900,16 @@ public class PDFView extends SurfaceView {
     public Configurator fromAsset(String assetName) {
         try {
             File pdfFile = FileUtils.fileFromAsset(getContext(), assetName);
-            return new Configurator(Uri.fromFile(pdfFile));
+            return fromFile(pdfFile);
         } catch (IOException e) {
-            throw new FileNotFoundException(assetName + " not found.", e);
+            throw new FileNotFoundException(assetName + " does not exist.", e);
         }
+    }
+
+    /** Use a file as the pdf source */
+    public Configurator fromFile(File file) {
+        if (!file.exists()) throw new FileNotFoundException(file.getAbsolutePath() + "does not exist.");
+        return new Configurator(Uri.fromFile(file));
     }
 
     private enum State {DEFAULT, LOADED, SHOWN}
