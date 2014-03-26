@@ -32,7 +32,7 @@ pdfView.fromAsset(pdfName)
     .defaultPage(1)
     .showMinimap(false)
     .enableSwipe(true)
-    .onDraw(onDrawListener)
+    .onDrawListener(onDrawListener)
     .onLoad(onLoadCompleteListener)
     .onPageChange(onPageChangeListener)
     .load();

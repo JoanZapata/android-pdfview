@@ -946,7 +946,7 @@ public class PDFView extends SurfaceView {
             return this;
         }
 
-        public Configurator onDraw(OnDrawListener onDrawListener) {
+        public Configurator onDrawListener(OnDrawListener onDrawListener) {
             this.onDrawListener = onDrawListener;
             return this;
         }
