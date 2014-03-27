@@ -18,11 +18,13 @@
  */
 package com.joanzapata.pdfview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.Paint.Style;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import com.joanzapata.pdfview.exception.FileNotFoundException;
@@ -213,7 +215,8 @@ public class PDFView extends SurfaceView {
         load(uri, listener, null);
     }
 
-    private void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, int[] userPages) {
+    @SuppressLint("NewApi")
+	private void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, int[] userPages) {
 
         if (!recycled) {
             throw new IllegalStateException("Don't call load on a PDF View without recycling it first.");
@@ -230,7 +233,11 @@ public class PDFView extends SurfaceView {
 
         // Start decoding document
         decodingAsyncTask = new DecodingAsyncTask(uri, this);
-        decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+        	decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		}else{
+			decodingAsyncTask.execute();
+		}
 
         renderingAsyncTask = new RenderingAsyncTask(this);
         renderingAsyncTask.execute();
