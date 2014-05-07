@@ -1,0 +1,33 @@
+apply plugin: 'android'
+
+description = 'android-pdfview-sample'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.3"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+        versionCode 2
+        versionName "1.0.1"
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+}
+
+dependencies {
+    compile project(':android-pdfview')
+    provided 'com.googlecode.androidannotations:androidannotations:2.7.1'
+    compile 'com.googlecode.androidannotations:androidannotations-api:2.7.1'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+}
