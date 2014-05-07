@@ -1,0 +1,28 @@
+allprojects  {
+    apply plugin: 'maven'
+
+    group = 'com.joanzapata.pdfview'
+    version = '1.0.2-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.9.+'
+    }
+}
+
+subprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "http://repo.maven.apache.org/maven2" }
+    }
+}

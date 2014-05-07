@@ -10,3 +10,23 @@ gen/
 out
 gen-external-apklibs/
 classes/
+
+# Local configuration file (sdk path, etc)
+local.properties
+*/local.properties
+
+# Android Studio
+.idea
+*/local.properties
+*/out
+*/build/**
+!*/build/apk/
+*/production/
+*.iws
+*.ipr
+*.iml
+*~
+*.swp
+
+# gradle
+.gradle

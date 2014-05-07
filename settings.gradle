@@ -1,0 +1,6 @@
+rootProject.name = 'android-pdfview-parent'
+include ':android-pdfview'
+include ':android-pdfview-sample'
+
+project(':android-pdfview').projectDir = "$rootDir/android-pdfview" as File
+project(':android-pdfview-sample').projectDir = "$rootDir/android-pdfview-sample" as File
