@@ -10,9 +10,15 @@ Android PDFView is **available in Maven Central**.
 <dependency>
 	<groupId>com.joanzapata.pdfview</groupId>
 	<artifactId>android-pdfview</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.2</version>
 	<type>apklib</type>
 </dependency>
+```
+
+Or via gradle:
+
+```
+compile 'com.joanzapata.pdfview:android-pdfview:1.0.+@aar'
 ```
 
 # Include PDFView in your layout
