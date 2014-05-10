@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Joan Zapata
+ * Copyright 2014 Joan Zapata
  *
  * This file is part of Android-pdfview.
  *
