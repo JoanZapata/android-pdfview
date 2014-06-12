@@ -18,14 +18,24 @@
  */
 package com.joanzapata.pdfview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
+
 import com.joanzapata.pdfview.exception.FileNotFoundException;
+import com.joanzapata.pdfview.listener.OnCorruptedFileListener;
 import com.joanzapata.pdfview.listener.OnDrawListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
@@ -34,6 +44,7 @@ import com.joanzapata.pdfview.util.ArrayUtils;
 import com.joanzapata.pdfview.util.Constants;
 import com.joanzapata.pdfview.util.FileUtils;
 import com.joanzapata.pdfview.util.NumberUtils;
+
 import org.vudroid.core.DecodeService;
 
 import java.io.File;
@@ -145,6 +156,9 @@ public class PDFView extends SurfaceView {
     /** Async task always playing in the background and proceeding rendering tasks */
     private RenderingAsyncTask renderingAsyncTask;
 
+    /** Call back object to call when corrupted file is detected */
+    private OnCorruptedFileListener onCorruptedFileListener;
+
     /** Call back object to call when the PDF is loaded */
     private OnLoadCompleteListener onLoadCompleteListener;
 
@@ -209,11 +223,12 @@ public class PDFView extends SurfaceView {
         setWillNotDraw(false);
     }
 
-    private void load(Uri uri, OnLoadCompleteListener listener) {
-        load(uri, listener, null);
+    private void load(Uri uri, OnLoadCompleteListener listener,OnCorruptedFileListener onCorruptedFileListener) {
+        load(uri, listener,onCorruptedFileListener, null);
     }
 
-    private void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, int[] userPages) {
+    @SuppressLint("NewApi")
+    private void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, OnCorruptedFileListener onCorruptedFileListener , int[] userPages) {
 
         if (!recycled) {
             throw new IllegalStateException("Don't call load on a PDF View without recycling it first.");
@@ -227,10 +242,16 @@ public class PDFView extends SurfaceView {
         }
 
         this.onLoadCompleteListener = onLoadCompleteListener;
+        this.onCorruptedFileListener = onCorruptedFileListener;
 
         // Start decoding document
         decodingAsyncTask = new DecodingAsyncTask(uri, this);
-        decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+        {
+            decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }else{
+            decodingAsyncTask.execute();
+        }
 
         renderingAsyncTask = new RenderingAsyncTask(this);
         renderingAsyncTask.execute();
@@ -282,6 +303,10 @@ public class PDFView extends SurfaceView {
 
     private void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
         this.onPageChangeListener = onPageChangeListener;
+    }
+
+    public void setOnCorruptedFileListener(OnCorruptedFileListener onCorruptedFileListener) {
+        this.onCorruptedFileListener = onCorruptedFileListener;
     }
 
     private void setOnDrawListener(OnDrawListener onDrawListener) {
@@ -619,14 +644,17 @@ public class PDFView extends SurfaceView {
 
     /** Called when the PDF is loaded */
     public void loadComplete(DecodeService decodeService) {
-        this.decodeService = decodeService;
-        this.documentPageCount = decodeService.getPageCount();
-
-        // We assume all the pages are the same size
-        this.pageWidth = decodeService.getPageWidth(0);
-        this.pageHeight = decodeService.getPageHeight(0);
-        state = State.LOADED;
-        calculateOptimalWidthAndHeight();
+        try {
+            this.decodeService = decodeService;
+            this.documentPageCount = decodeService.getPageCount();
+            // We assume all the pages are the same size
+            this.pageWidth = decodeService.getPageWidth(0);
+            this.pageHeight = decodeService.getPageHeight(0);
+        }catch (Exception e){
+            onCorruptedFileListener.onCorrupted(e);
+        }
+            state = State.LOADED;
+            calculateOptimalWidthAndHeight();
 
         // Notify the listener
         jumpTo(defaultPage);
@@ -924,6 +952,8 @@ public class PDFView extends SurfaceView {
 
         private OnDrawListener onDrawListener;
 
+        private OnCorruptedFileListener onCorruptedFileListener;
+
         private OnLoadCompleteListener onLoadCompleteListener;
 
         private OnPageChangeListener onPageChangeListener;
@@ -943,6 +973,11 @@ public class PDFView extends SurfaceView {
 
         public Configurator enableSwipe(boolean enableSwipe) {
             this.enableSwipe = enableSwipe;
+            return this;
+        }
+
+        public Configurator onCorruptedFile(OnCorruptedFileListener onCorruptedFileListener1) {
+            this.onCorruptedFileListener = onCorruptedFileListener1;
             return this;
         }
 
@@ -969,14 +1004,15 @@ public class PDFView extends SurfaceView {
         public void load() {
             PDFView.this.recycle();
             PDFView.this.setOnDrawListener(onDrawListener);
+            PDFView.this.setOnCorruptedFileListener(onCorruptedFileListener);
             PDFView.this.setOnPageChangeListener(onPageChangeListener);
             PDFView.this.enableSwipe(enableSwipe);
             PDFView.this.setDefaultPage(defaultPage);
             PDFView.this.setUserWantsMinimap(showMinimap);
             if (pageNumbers != null) {
-                PDFView.this.load(uri, onLoadCompleteListener, pageNumbers);
+                PDFView.this.load(uri, onLoadCompleteListener,onCorruptedFileListener, pageNumbers);
             } else {
-                PDFView.this.load(uri, onLoadCompleteListener);
+                PDFView.this.load(uri, onLoadCompleteListener,onCorruptedFileListener);
             }
         }
 
