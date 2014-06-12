@@ -33,6 +33,7 @@ pdfView.fromAsset(pdfName)
     .showMinimap(false)
     .enableSwipe(true)
     .onDraw(onDrawListener)
+    .onCorruptedFile(onCorruptedFileListener)
     .onLoad(onLoadCompleteListener)
     .onPageChange(onPageChangeListener)
     .load();
