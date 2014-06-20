@@ -19,13 +19,7 @@
 
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.joanzapata.pdfview.sample"
-	android:versionCode="3"
-	android:versionName="1.0.1" >
-
-	<uses-sdk
-		android:minSdkVersion="8"
-		android:targetSdkVersion="17" />
+	package="com.joanzapata.pdfview.sample">
 
 	<application
 		android:icon="@drawable/ic_launcher"

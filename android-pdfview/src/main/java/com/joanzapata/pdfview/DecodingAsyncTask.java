@@ -19,10 +19,7 @@
 package com.joanzapata.pdfview;
 
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.joanzapata.pdfview.PDFView;
+import com.joanzapata.pdfview.util.AsyncTask;
 
 import org.vudroid.core.DecodeService;
 import org.vudroid.core.DecodeServiceBase;
