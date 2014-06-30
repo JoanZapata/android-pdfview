@@ -50,7 +50,7 @@ public class PdfPage implements CodecPage
         return render(new Rect(0,0,width,height), matrix);
     }
 
-    static PdfPage createPage(long dochandle, int pageno)
+    static synchronized PdfPage createPage(long dochandle, int pageno)
     {
         return new PdfPage(open(dochandle, pageno), dochandle);
     }
