@@ -40,13 +40,16 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
 
     private long startDragTime;
 
-    private float startDragX;
+    private float startDrag;
 
     private boolean isSwipeEnabled;
+    
+    private final boolean isHorizontal;
 
-    public DragPinchManager(PDFView pdfView) {
+    public DragPinchManager(PDFView pdfView, boolean isHorizontal) {
         this.pdfView = pdfView;
         this.isSwipeEnabled = false;
+        this.isHorizontal = isHorizontal;
         dragPinchListener = new DragPinchListener();
         dragPinchListener.setOnDragListener(this);
         dragPinchListener.setOnPinchListener(this);
@@ -68,7 +71,8 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     @Override
     public void startDrag(float x, float y) {
         startDragTime = System.currentTimeMillis();
-        startDragX = x;
+        if (isHorizontal) startDrag = x;
+        else startDrag = y;
     }
 
     @Override
@@ -82,7 +86,10 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     public void endDrag(float x, float y) {
         if (!isZooming()) {
             if (isSwipeEnabled) {
-                float distance = x - startDragX;
+            	
+                float distance;
+                if (isHorizontal) distance = x - startDrag;
+                else distance = y - startDrag;
                 long time = System.currentTimeMillis() - startDragTime;
                 int diff = distance > 0 ? -1 : +1;
 
@@ -102,7 +109,8 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     }
 
     private boolean isPageChange(float distance) {
-        return Math.abs(distance) > Math.abs(pdfView.toCurrentScale(pdfView.getOptimalPageWidth()) / 2);
+    	if (isHorizontal) return Math.abs(distance) > Math.abs(pdfView.toCurrentScale(pdfView.getOptimalPageWidth()) / 2);
+    	else return Math.abs(distance) > Math.abs(pdfView.toCurrentScale(pdfView.getOptimalPageHeight()) / 2);
     }
 
     private boolean isQuickMove(float dx, long dt) {
