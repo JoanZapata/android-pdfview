@@ -56,6 +56,17 @@ class AnimationManager {
         animation.setDuration(400);
         animation.start();
     }
+    
+    public void startYAnimation(float yFrom, float yTo) {
+        if (animation != null) {
+            animation.cancel();
+        }
+        animation = ValueAnimator.ofFloat(yFrom, yTo);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.addUpdateListener(new YAnimation());
+        animation.setDuration(400);
+        animation.start();
+    }
 
     public void startZoomAnimation(float zoomFrom, float zoomTo) {
         if (animation != null) {
@@ -83,6 +94,16 @@ class AnimationManager {
         public void onAnimationUpdate(ValueAnimator animation) {
             float offset = (Float) animation.getAnimatedValue();
             pdfView.moveTo(offset, pdfView.getCurrentYOffset());
+        }
+
+    }
+    
+    class YAnimation implements AnimatorUpdateListener {
+
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            float offset = (Float) animation.getAnimatedValue();
+            pdfView.moveTo(pdfView.getCurrentXOffset(), offset);
         }
 
     }
