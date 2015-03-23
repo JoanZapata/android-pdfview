@@ -35,6 +35,7 @@ import com.joanzapata.pdfview.util.Constants;
 import com.joanzapata.pdfview.util.FileUtils;
 import com.joanzapata.pdfview.util.NumberUtils;
 import org.vudroid.core.DecodeService;
+import android.os.Build;
 
 import java.io.File;
 import java.io.IOException;
@@ -230,7 +231,10 @@ public class PDFView extends SurfaceView {
 
         // Start decoding document
         decodingAsyncTask = new DecodingAsyncTask(uri, this);
-        decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (Build.VERSION.SDK_INT < 11)
+            decodingAsyncTask.execute();
+        else
+            decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         renderingAsyncTask = new RenderingAsyncTask(this);
         renderingAsyncTask.execute();
