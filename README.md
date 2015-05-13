@@ -12,7 +12,7 @@ Android PDFView is **available in Maven Central**.
 <dependency>
 	<groupId>com.joanzapata.pdfview</groupId>
 	<artifactId>android-pdfview</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<type>apklib</type>
 </dependency>
 ```
@@ -20,7 +20,7 @@ Android PDFView is **available in Maven Central**.
 Or via gradle:
 
 ```
-compile 'com.joanzapata.pdfview:android-pdfview:1.0.+@aar'
+compile 'com.joanzapata.pdfview:android-pdfview:1.0.3@aar'
 ```
 
 # Include PDFView in your layout
@@ -52,7 +52,7 @@ pdfView.fromAsset(pdfName)
 # License
 
 ```
-Copyright 2013 Joan Zapata
+Copyright 2013-2015 Joan Zapata
 
 This file is part of Android-pdfview.
 
