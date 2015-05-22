@@ -163,10 +163,8 @@ public class DragPinchListener implements OnTouchListener {
             // TRICKY CASE : FIRST POINTER UP WHEN SECOND STILL DOWN
             case MotionEvent.ACTION_POINTER_1_UP:
 
-                // FIXME Probably not the good value
                 dragLastX = pointer2LastX;
                 dragLastY = pointer2LastY;
-                startDrag(event);
                 state = State.DRAG;
                 break;
 
