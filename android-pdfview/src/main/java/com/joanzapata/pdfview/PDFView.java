@@ -236,7 +236,7 @@ public class PDFView extends SurfaceView {
         decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         renderingAsyncTask = new RenderingAsyncTask(this);
-        renderingAsyncTask.execute();
+        renderingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
