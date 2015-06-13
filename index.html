@@ -6,7 +6,7 @@
     <title>Android-pdfview by JoanZapata</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -28,60 +28,61 @@
         </ul>
       </header>
       <section>
-        <p><a href="https://play.google.com/store/apps/details?id=com.joanzapata.pdfview.sample"><img src="https://raw.github.com/JoanZapata/android-pdfview/master/device.png" alt="Screenshot of the sample app"></a></p>
+        <p><a href="https://android-arsenal.com/details/1/1332"><img src="https://img.shields.io/badge/Android%20Arsenal-android--pdfview-brightgreen.svg?style=flat" alt="Android Arsenal"></a></p>
+
+<p><a href="https://play.google.com/store/apps/details?id=com.joanzapata.pdfview.sample"><img src="https://raw.github.com/JoanZapata/android-pdfview/master/device.png" alt="Screenshot of the sample app"></a></p>
 
 <p><strong>Android PDFView</strong> is a library which provides a fast PDFView component for Android, with <code>animations</code>, <code>gestures</code>, and <code>zoom</code>. It's based on <a href="https://code.google.com/p/vudroid/">VuDroid</a> for decoding the PDF file.</p>
 
 <h1>
-<a name="get-it" class="anchor" href="#get-it"><span class="octicon octicon-link"></span></a>Get it</h1>
+<a id="get-it" class="anchor" href="#get-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get it</h1>
 
 <p>Android PDFView is <strong>available in Maven Central</strong>.</p>
 
-<div class="highlight highlight-xml"><pre><span class="nt">&lt;dependency&gt;</span>
-    <span class="nt">&lt;groupId&gt;</span>com.joanzapata.pdfview<span class="nt">&lt;/groupId&gt;</span>
-    <span class="nt">&lt;artifactId&gt;</span>android-pdfview<span class="nt">&lt;/artifactId&gt;</span>
-    <span class="nt">&lt;version&gt;</span>1.0.2<span class="nt">&lt;/version&gt;</span>
-    <span class="nt">&lt;type&gt;</span>apklib<span class="nt">&lt;/type&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+    &lt;<span class="pl-ent">groupId</span>&gt;com.joanzapata.pdfview&lt;/<span class="pl-ent">groupId</span>&gt;
+    &lt;<span class="pl-ent">artifactId</span>&gt;android-pdfview&lt;/<span class="pl-ent">artifactId</span>&gt;
+    &lt;<span class="pl-ent">version</span>&gt;1.0.4&lt;/<span class="pl-ent">version</span>&gt;
+    &lt;<span class="pl-ent">type</span>&gt;apklib&lt;/<span class="pl-ent">type</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
 
 <p>Or via gradle:</p>
 
-<pre><code>compile 'com.joanzapata.pdfview:android-pdfview:1.0.+@aar'
+<pre><code>compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
 </code></pre>
 
 <h1>
-<a name="include-pdfview-in-your-layout" class="anchor" href="#include-pdfview-in-your-layout"><span class="octicon octicon-link"></span></a>Include PDFView in your layout</h1>
+<a id="include-pdfview-in-your-layout" class="anchor" href="#include-pdfview-in-your-layout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Include PDFView in your layout</h1>
 
-<div class="highlight highlight-xml"><pre><span class="nt">&lt;com.joanzapata.pdfview.PDFView</span>
-        <span class="na">android:id=</span><span class="s">"@+id/pdfview"</span>
-        <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
-        <span class="na">android:layout_height=</span><span class="s">"match_parent"</span><span class="nt">/&gt;</span>
-</pre></div>
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">com</span>.joanzapata.pdfview.PDFView
+        <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>@+id/pdfview<span class="pl-pds">"</span></span>
+        <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">layout_width</span>=<span class="pl-s"><span class="pl-pds">"</span>match_parent<span class="pl-pds">"</span></span>
+        <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">layout_height</span>=<span class="pl-s"><span class="pl-pds">"</span>match_parent<span class="pl-pds">"</span></span>/&gt;</pre></div>
 
 <h1>
-<a name="load-a-pdf-file" class="anchor" href="#load-a-pdf-file"><span class="octicon octicon-link"></span></a>Load a PDF file</h1>
+<a id="load-a-pdf-file" class="anchor" href="#load-a-pdf-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Load a PDF file</h1>
 
-<div class="highlight highlight-java"><pre><span class="n">pdfView</span><span class="o">.</span><span class="na">fromAsset</span><span class="o">(</span><span class="n">pdfName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">pages</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">defaultPage</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">showMinimap</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">enableSwipe</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">onDraw</span><span class="o">(</span><span class="n">onDrawListener</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">onLoad</span><span class="o">(</span><span class="n">onLoadCompleteListener</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">onPageChange</span><span class="o">(</span><span class="n">onPageChangeListener</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">load</span><span class="o">();</span>
-</pre></div>
+<div class="highlight highlight-java"><pre>pdfView<span class="pl-k">.</span>fromAsset(pdfName)
+    .pages(<span class="pl-c1">0</span>, <span class="pl-c1">2</span>, <span class="pl-c1">1</span>, <span class="pl-c1">3</span>, <span class="pl-c1">3</span>, <span class="pl-c1">3</span>)
+    .defaultPage(<span class="pl-c1">1</span>)
+    .showMinimap(<span class="pl-c1">false</span>)
+    .enableSwipe(<span class="pl-c1">true</span>)
+    .onDraw(onDrawListener)
+    .onLoad(onLoadCompleteListener)
+    .onPageChange(onPageChangeListener)
+    .load();</pre></div>
 
 <ul>
 <li>
 <code>pages</code> is optional, it allows you to filter and order the pages of the PDF as you need</li>
 <li>
 <code>onDraw</code> is also optional, and allows you to draw something on a provided canvas, above the current page</li>
-</ul><h1>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
+</ul>
 
-<pre><code>Copyright 2013 Joan Zapata
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+
+<pre><code>Copyright 2013-2015 Joan Zapata
 
 This file is part of Android-pdfview.
 
