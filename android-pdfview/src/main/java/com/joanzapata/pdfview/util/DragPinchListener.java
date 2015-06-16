@@ -159,16 +159,18 @@ public class DragPinchListener implements OnTouchListener {
 
                 // Treat clicks
                 if (isClick(event, lastDownX, lastDownY, event.getX(), event.getY())) {
-                    handlerClick.removeCallbacks(runnableClick);
                     long time = System.currentTimeMillis();
-                    if (time - lastClickTime < MAX_DOUBLE_CLICK_TIME) {
-                        if (onDoubleTapListener != null) {
+                    handlerClick.removeCallbacks(runnableClick);
+                    if(onDoubleTapListener != null) {
+                        if (time - lastClickTime < MAX_DOUBLE_CLICK_TIME) {
                             onDoubleTapListener.onDoubleTap(event.getX(), event.getY());
+                            lastClickTime = 0;
+                        } else {
+                            lastClickTime = System.currentTimeMillis();
+                            handlerClick.postDelayed(runnableClick, MAX_CLICK_TIME);
                         }
-                        lastClickTime = 0;
-                    } else {
-                        lastClickTime = System.currentTimeMillis();
-                        handlerClick.postDelayed(runnableClick,MAX_CLICK_TIME);
+                    }else{
+                        handlerClick.postDelayed(runnableClick,0);
                     }
                 }
                 break;
