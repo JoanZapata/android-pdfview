@@ -286,6 +286,7 @@ public class PDFView extends SurfaceView {
     public void enableDoubletap(boolean enableDoubletap){
         this.dragPinchManager.enableDoubletap(enableDoubletap);
     }
+    
     private void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
         this.onPageChangeListener = onPageChangeListener;
     }
