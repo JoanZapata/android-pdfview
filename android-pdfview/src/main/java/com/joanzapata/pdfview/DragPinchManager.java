@@ -57,7 +57,15 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
         dragPinchListener.setOnDoubleTapListener(this);
         pdfView.setOnTouchListener(dragPinchListener);
     }
-
+    
+    public void enableDoubletap(boolean enableDoubletap){
+        if (enableDoubletap) {
+            dragPinchListener.setOnDoubleTapListener(this);
+        } else {
+            dragPinchListener.setOnDoubleTapListener(null);
+        }
+    }
+    
     @Override
     public void onPinch(float dr, PointF pivot) {
         float wantedZoom = pdfView.getZoom() * dr;
