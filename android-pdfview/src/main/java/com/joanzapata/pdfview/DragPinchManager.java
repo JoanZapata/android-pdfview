@@ -59,9 +59,9 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     }
     
     public void enableDoubletap(boolean enableDoubletap){
-        if(enableDoubletap){
+        if (enableDoubletap) {
             dragPinchListener.setOnDoubleTapListener(this);
-        }else{
+        } else {
             dragPinchListener.setOnDoubleTapListener(null);
         }
     }
