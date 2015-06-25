@@ -25,8 +25,6 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.graphics.PointF;
 import android.view.animation.DecelerateInterpolator;
 
-import com.joanzapata.pdfview.PDFView;
-
 /**
  * @author Joan Zapata
  *         <p/>
@@ -68,13 +66,13 @@ class AnimationManager {
         animation.start();
     }
 
-    public void startZoomAnimation(float zoomFrom, float zoomTo) {
+    public void startZoomAnimation(float zoomFrom, float zoomTo, PointF centerPoint) {
         if (animation != null) {
             animation.cancel();
         }
         animation = ValueAnimator.ofFloat(zoomFrom, zoomTo);
         animation.setInterpolator(new DecelerateInterpolator());
-        ZoomAnimation zoomAnim = new ZoomAnimation();
+        ZoomAnimation zoomAnim = new ZoomAnimation(centerPoint);
         animation.addUpdateListener(zoomAnim);
         animation.addListener(zoomAnim);
         animation.setDuration(400);
@@ -110,10 +108,16 @@ class AnimationManager {
 
     class ZoomAnimation implements AnimatorUpdateListener, AnimatorListener {
 
+        private final PointF centerPoint;
+
+        public ZoomAnimation(PointF centerPoint) {
+            this.centerPoint = centerPoint;
+        }
+
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             float zoom = (Float) animation.getAnimatedValue();
-            pdfView.zoomCenteredTo(zoom, new PointF(pdfView.getWidth() / 2, pdfView.getHeight() / 2));
+            pdfView.zoomCenteredTo(zoom, centerPoint);
         }
 
         @Override

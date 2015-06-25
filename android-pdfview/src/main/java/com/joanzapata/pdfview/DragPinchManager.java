@@ -19,13 +19,17 @@
 package com.joanzapata.pdfview;
 
 import android.graphics.PointF;
-import com.joanzapata.pdfview.PDFView;
+
+import com.joanzapata.pdfview.util.Constants;
 import com.joanzapata.pdfview.util.DragPinchListener;
 import com.joanzapata.pdfview.util.DragPinchListener.OnDoubleTapListener;
 import com.joanzapata.pdfview.util.DragPinchListener.OnDragListener;
 import com.joanzapata.pdfview.util.DragPinchListener.OnPinchListener;
 
-import static com.joanzapata.pdfview.util.Constants.Pinch.*;
+import static com.joanzapata.pdfview.util.Constants.Pinch.MAXIMUM_ZOOM;
+import static com.joanzapata.pdfview.util.Constants.Pinch.MINIMUM_ZOOM;
+import static com.joanzapata.pdfview.util.Constants.Pinch.QUICK_MOVE_THRESHOLD_DISTANCE;
+import static com.joanzapata.pdfview.util.Constants.Pinch.QUICK_MOVE_THRESHOLD_TIME;
 
 /**
  * @author Joan Zapata
@@ -136,6 +140,8 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     public void onDoubleTap(float x, float y) {
         if (isZooming()) {
             pdfView.resetZoomWithAnimation();
+        } else {
+            pdfView.zoomWithAnimation(Constants.Pinch.DOUBLECLICK_ZOOM, new PointF(x, y));
         }
     }
 
