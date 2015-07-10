@@ -19,12 +19,20 @@
 package com.joanzapata.pdfview;
 
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
+
 import com.joanzapata.pdfview.exception.FileNotFoundException;
 import com.joanzapata.pdfview.listener.OnDrawListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
@@ -34,6 +42,7 @@ import com.joanzapata.pdfview.util.ArrayUtils;
 import com.joanzapata.pdfview.util.Constants;
 import com.joanzapata.pdfview.util.FileUtils;
 import com.joanzapata.pdfview.util.NumberUtils;
+
 import org.vudroid.core.DecodeService;
 
 import java.io.File;
@@ -230,10 +239,18 @@ public class PDFView extends SurfaceView {
 
         // Start decoding document
         decodingAsyncTask = new DecodingAsyncTask(uri, this);
-        decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            decodingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            decodingAsyncTask.execute();
+        }
 
         renderingAsyncTask = new RenderingAsyncTask(this);
-        renderingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            renderingAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            renderingAsyncTask.execute();
+        }
     }
 
     /**
@@ -1094,3 +1111,4 @@ public class PDFView extends SurfaceView {
 		this.swipeVertical = swipeVertical;
 	}
 }
+

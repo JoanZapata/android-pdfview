@@ -18,14 +18,11 @@
  */
 package com.joanzapata.pdfview;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.graphics.PointF;
 import android.view.animation.DecelerateInterpolator;
 
-import com.joanzapata.pdfview.PDFView;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ValueAnimator;
 
 /**
  * @author Joan Zapata
@@ -88,7 +85,7 @@ class AnimationManager {
         }
     }
 
-    class XAnimation implements AnimatorUpdateListener {
+    class XAnimation implements ValueAnimator.AnimatorUpdateListener {
 
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
@@ -98,7 +95,7 @@ class AnimationManager {
 
     }
     
-    class YAnimation implements AnimatorUpdateListener {
+    class YAnimation implements ValueAnimator.AnimatorUpdateListener {
 
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
@@ -108,7 +105,7 @@ class AnimationManager {
 
     }
 
-    class ZoomAnimation implements AnimatorUpdateListener, AnimatorListener {
+    class ZoomAnimation implements ValueAnimator.AnimatorUpdateListener, Animator.AnimatorListener {
 
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
@@ -136,3 +133,4 @@ class AnimationManager {
     }
 
 }
+
