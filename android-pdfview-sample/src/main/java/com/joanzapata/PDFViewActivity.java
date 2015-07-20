@@ -18,54 +18,46 @@
  */
 package com.joanzapata;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.googlecode.androidannotations.annotations.*;
+
 import com.joanzapata.pdfview.PDFView;
+import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
+import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.joanzapata.pdfview.sample.R;
 
 import static java.lang.String.format;
 
-@EActivity(R.layout.activity_main)
-@OptionsMenu(R.menu.actionbar)
-public class PDFViewActivity extends SherlockActivity implements OnPageChangeListener {
+public class PDFViewActivity extends Activity implements OnPageChangeListener, OnLoadCompleteListener,
+        OnErrorOccurredListener {
 
     public static final String SAMPLE_FILE = "sample.pdf";
 
     public static final String ABOUT_FILE = "about.pdf";
 
-    @ViewById
-    PDFView pdfView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    @NonConfigurationInstance
-    String pdfName = SAMPLE_FILE;
+        pdfView = (PDFView)findViewById(R.id.pdfView);
 
-    @NonConfigurationInstance
-    Integer pageNumber = 1;
-
-    @AfterViews
-    void afterViews() {
-        display(pdfName, false);
-    }
-
-    @OptionsItem
-    public void about() {
-        if (!displaying(ABOUT_FILE))
-            display(ABOUT_FILE, true);
-    }
-
-    private void display(String assetFileName, boolean jumpToFirstPage) {
-        if (jumpToFirstPage) pageNumber = 1;
-        setTitle(pdfName = assetFileName);
-
-        pdfView.fromAsset(assetFileName)
+        pdfView.fromAsset(SAMPLE_FILE)
                 .defaultPage(pageNumber)
                 .onPageChange(this)
+                .onErrorOccured(this)
                 .load();
     }
+
+    PDFView pdfView;
+
+
+    String pdfName = SAMPLE_FILE;
+
+
+    Integer pageNumber = 1;
 
     @Override
     public void onPageChanged(int page, int pageCount) {
@@ -74,12 +66,13 @@ public class PDFViewActivity extends SherlockActivity implements OnPageChangeLis
     }
 
     @Override
-    public void onBackPressed() {
-        if (ABOUT_FILE.equals(pdfName)) {
-            display(SAMPLE_FILE, true);
-        } else {
-            super.onBackPressed();
-        }
+    public void loadComplete(int nbPages) {
+        Log.d("AS  ", "f");
+    }
+
+    @Override
+    public void errorOccured() {
+        Log.d("error   ", "A");
     }
 
     private boolean displaying(String fileName) {
