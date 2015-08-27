@@ -563,7 +563,7 @@ public class PDFView extends SurfaceView {
         float middleOfScreenY = (-currentYOffset + getHeight() / 2);
         float middleOfScreenPageX;
         float middleOfScreenPageY;
-        if (swipeVertical) {
+        if (!swipeVertical) {
         	middleOfScreenPageX = middleOfScreenX - userPage * toCurrentScale(optimalPageWidth);
         	middleOfScreenPageY = middleOfScreenY;
         } else {
