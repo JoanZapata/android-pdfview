@@ -1082,7 +1082,7 @@ public class PDFView extends SurfaceView {
             PDFView.this.maskPaint = new Paint();
             PDFView.this.maskPaint.setColor(maskColor);
             PDFView.this.maskPaint.setAlpha(maskAlpha);
-            PDFView.this.setBackgroundPDF(background);
+            PDFView.this.setPdfViewBackgroundColor(background);
             if (pageNumbers != null) {
                 PDFView.this.load(uri, onLoadCompleteListener, pageNumbers);
             } else {
@@ -1104,7 +1104,7 @@ public class PDFView extends SurfaceView {
 		this.swipeVertical = swipeVertical;
 	}
 
-    public void setBackgroundPDF(int color) {
+    public void setPdfViewBackgroundColor(int color) {
         this.backgroundColor = color;
     }
 
