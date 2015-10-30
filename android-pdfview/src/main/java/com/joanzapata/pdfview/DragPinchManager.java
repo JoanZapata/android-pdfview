@@ -42,6 +42,8 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
 
     private float startDragX;
     private float startDragY;
+    private float lastOffsetX;
+    private float lastOffsetY;
 
     private boolean isSwipeEnabled;
     
@@ -82,6 +84,8 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
         startDragTime = System.currentTimeMillis();
         startDragX = x;
         startDragY = y;
+        lastOffsetX = pdfView.getCurrentXOffset();
+        lastOffsetY = pdfView.getCurrentYOffset();
     }
 
     @Override
@@ -93,16 +97,28 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
 
     @Override
     public void endDrag(float x, float y) {
-        if (!isZooming()) {
+        float distance, offsetChange;
+        if (swipeVertical) {
+            distance = y - startDragY;
+            offsetChange = lastOffsetY - pdfView.getCurrentYOffset();
+        } else {
+            distance = x - startDragX;
+            offsetChange = lastOffsetX - pdfView.getCurrentXOffset();
+        }
+
+        int diff = distance > 0 ? -1 : +1;
+
+        if (isZooming()) {
             if (isSwipeEnabled) {
-            	float distance;
-            	if (swipeVertical)
-            		distance = y - startDragY;
-            	else
-	                distance = x - startDragX;
-            	
+                if (isZoomPageChange(distance, offsetChange)) {
+                    pdfView.showPage(pdfView.getCurrentPage() + diff);
+                } else {
+                    pdfView.loadPages();
+                }
+            }
+        } else {
+            if (isSwipeEnabled) {
                 long time = System.currentTimeMillis() - startDragTime;
-                int diff = distance > 0 ? -1 : +1;
 
                 if (isQuickMove(distance, time) || isPageChange(distance)) {
                     pdfView.showPage(pdfView.getCurrentPage() + diff);
@@ -110,8 +126,6 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
                     pdfView.showPage(pdfView.getCurrentPage());
                 }
             }
-        } else {
-            pdfView.loadPages();
         }
     }
 
@@ -121,6 +135,10 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
 
     private boolean isPageChange(float distance) {
         return Math.abs(distance) > Math.abs(pdfView.toCurrentScale(pdfView.getOptimalPageWidth()) / 2);
+    }
+
+    private boolean isZoomPageChange(float distance, float offsetChange) {
+        return Math.abs(distance) > ZOOM_MOVE_THRESHOLD_DISTANCE && offsetChange == 0;
     }
 
     private boolean isQuickMove(float dx, long dt) {

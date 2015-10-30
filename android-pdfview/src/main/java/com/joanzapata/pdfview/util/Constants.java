@@ -64,7 +64,9 @@ public interface Constants {
          */
         static final int QUICK_MOVE_THRESHOLD_TIME = 250, //
 
-        QUICK_MOVE_THRESHOLD_DISTANCE = 50;
+        QUICK_MOVE_THRESHOLD_DISTANCE = 50,
+
+        ZOOM_MOVE_THRESHOLD_DISTANCE = 50;
 
     }
 
