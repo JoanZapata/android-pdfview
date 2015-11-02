@@ -47,7 +47,7 @@ public interface Constants {
     public interface Cache {
 
         /** The size of the cache (number of bitmaps kept) */
-        static final int CACHE_SIZE = (int) Math.pow(GRID_SIZE, 2d);
+        static final int DEFAULT_CACHE_SIZE = (int) Math.pow(GRID_SIZE, 2d);
 
         static final int THUMBNAILS_CACHE_SIZE = 4;
     }

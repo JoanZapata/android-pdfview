@@ -39,7 +39,7 @@ import org.vudroid.core.DecodeService;
 import java.io.File;
 import java.io.IOException;
 
-import static com.joanzapata.pdfview.util.Constants.Cache.CACHE_SIZE;
+import static com.joanzapata.pdfview.util.Constants.Cache.DEFAULT_CACHE_SIZE;
 
 /**
  * @author Joan Zapata
@@ -180,7 +180,7 @@ public class PDFView extends SurfaceView {
     private int defaultPage = 0;
 
     private boolean userWantsMinimap = false;
-    
+
     /** True if should scroll through pages vertically instead of horizontally */
     private boolean swipeVertical = false;
 
@@ -294,6 +294,11 @@ public class PDFView extends SurfaceView {
     private void setOnDrawListener(OnDrawListener onDrawListener) {
         this.onDrawListener = onDrawListener;
     }
+
+    private void setCacheSize(int cacheSize) {
+        this.cacheManager.setCacheSize(cacheSize);
+    }
+
 
     public void recycle() {
 
@@ -489,10 +494,11 @@ public class PDFView extends SurfaceView {
         // Loop through the pages like [...][4][2][0][1][3][...]
         // loading as many parts as it can.
         int parts = 0;
-        for (int i = 0; i <= Constants.LOADED_SIZE / 2 && parts < CACHE_SIZE; i++) {
-            parts += loadPage(index + i, CACHE_SIZE - parts);
-            if (i != 0 && parts < CACHE_SIZE) {
-                parts += loadPage(index - i, CACHE_SIZE - parts);
+        int cacheSize = this.cacheManager.getCacheSize();
+        for (int i = 0; i <= Constants.LOADED_SIZE / 2 && parts < cacheSize; i++) {
+            parts += loadPage(index + i, cacheSize - parts);
+            if (i != 0 && parts < cacheSize) {
+                parts += loadPage(index - i, cacheSize - parts);
             }
         }
 
@@ -987,7 +993,7 @@ public class PDFView extends SurfaceView {
 
         private boolean enableSwipe = true;
 
-	private boolean enableDoubletap = true ;
+	    private boolean enableDoubletap = true ;
 
         private OnDrawListener onDrawListener;
 
@@ -1005,6 +1011,8 @@ public class PDFView extends SurfaceView {
 
         private int maskAlpha = Constants.MASK_ALPHA;
 
+        private int cacheSize = DEFAULT_CACHE_SIZE;
+
         private Configurator(Uri uri) {
             this.uri = uri;
         }
@@ -1019,7 +1027,7 @@ public class PDFView extends SurfaceView {
             return this;
         }
         
-	public Configurator enableDoubletap(boolean enableDoubletap){
+	    public Configurator enableDoubletap(boolean enableDoubletap){
             this.enableDoubletap = enableDoubletap ;
             return this ;
         }
@@ -1060,8 +1068,20 @@ public class PDFView extends SurfaceView {
             return this;
         }
 
+        /**
+         * Sets the size of the loaded bitmaps kept into memory.
+         * The default is Math.pow(Constants.GRID_SIZE, 2d)
+         * @param cacheSize the new size of the cache
+         * @return the configurator to continue setting up.
+         */
+        public Configurator setCacheSize(int cacheSize) {
+            this.cacheSize = cacheSize;
+            return this;
+        }
+
         public void load() {
             PDFView.this.recycle();
+            PDFView.this.setCacheSize(cacheSize);
             PDFView.this.setOnDrawListener(onDrawListener);
             PDFView.this.setOnPageChangeListener(onPageChangeListener);
             PDFView.this.enableSwipe(enableSwipe);

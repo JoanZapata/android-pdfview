@@ -35,10 +35,37 @@ class CacheManager {
 
     private Vector<PagePart> thumbnails;
 
+    private int cacheSize = DEFAULT_CACHE_SIZE;
+
+    private final Object lock = new Object();
+
     public CacheManager() {
-        activeCache = new PriorityQueue<PagePart>(CACHE_SIZE, new PagePartComparator());
-        passiveCache = new PriorityQueue<PagePart>(CACHE_SIZE, new PagePartComparator());
+        activeCache = new PriorityQueue<PagePart>(cacheSize, new PagePartComparator());
+        passiveCache = new PriorityQueue<PagePart>(cacheSize, new PagePartComparator());
         thumbnails = new Vector<PagePart>();
+    }
+
+    public void setCacheSize(int cacheSize) {
+        synchronized (lock) {
+            if (this.cacheSize != cacheSize) {
+                PriorityQueue<PagePart> active = new PriorityQueue(cacheSize, new PagePartComparator());
+                PriorityQueue<PagePart> passive = new PriorityQueue(cacheSize, new PagePartComparator());
+
+                active.addAll(activeCache);
+                activeCache.clear();
+                this.activeCache = active;
+
+                passive.addAll(passiveCache);
+                passiveCache.clear();
+                this.passiveCache = passive;
+
+                this.cacheSize = cacheSize;
+            }
+        }
+    }
+
+    public int getCacheSize() {
+        return this.cacheSize;
     }
 
     public void cachePart(PagePart part) {
@@ -58,12 +85,12 @@ class CacheManager {
 
     private void makeAFreeSpace() {
 
-        while ((activeCache.size() + passiveCache.size()) >= CACHE_SIZE &&
+        while ((activeCache.size() + passiveCache.size()) >= getCacheSize() &&
                 !passiveCache.isEmpty()) {
             passiveCache.poll().getRenderedBitmap().recycle();
         }
 
-        while ((activeCache.size() + passiveCache.size()) >= CACHE_SIZE &&
+        while ((activeCache.size() + passiveCache.size()) >= getCacheSize() &&
                 !activeCache.isEmpty()) {
             activeCache.poll().getRenderedBitmap().recycle();
         }
