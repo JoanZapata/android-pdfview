@@ -20,15 +20,12 @@ package com.joanzapata.pdfview;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.joanzapata.pdfview.PDFView;
 
 import org.vudroid.core.DecodeService;
 import org.vudroid.core.DecodeServiceBase;
 import org.vudroid.pdfdroid.codec.PdfContext;
 
-class DecodingAsyncTask extends AsyncTask<Void, Void, Void> {
+class DecodingAsyncTask extends AsyncTask<Void, Void, Throwable> {
 
     /** The decode service used for decoding the PDF */
     private DecodeService decodeService;
@@ -43,17 +40,27 @@ class DecodingAsyncTask extends AsyncTask<Void, Void, Void> {
         this.cancelled = false;
         this.pdfView = pdfView;
         this.uri = uri;
+
+        decodeService = new DecodeServiceBase(new PdfContext());
+        decodeService.setContentResolver(pdfView.getContext().getContentResolver());
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
-        decodeService = new DecodeServiceBase(new PdfContext());
-        decodeService.setContentResolver(pdfView.getContext().getContentResolver());
-        decodeService.open(uri);
-        return null;
+    protected Throwable doInBackground(Void... params) {
+        try {
+            decodeService.open(uri);
+            return null;
+        } catch (Throwable t) {
+            return t;
+        }
     }
 
-    protected void onPostExecute(Void result) {
+    protected void onPostExecute(Throwable t) {
+        if (t != null) {
+            pdfView.loadError(t);
+            return;
+        }
+
         if (!cancelled) {
             pdfView.loadComplete(decodeService);
         }
