@@ -22,8 +22,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.joanzapata.pdfview.PDFView;
+import com.joanzapata.pdfview.listener.OnErrorListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.joanzapata.pdfview.sample.R;
 
@@ -81,6 +83,12 @@ public class PDFViewActivity extends AppCompatActivity implements OnPageChangeLi
         pdfView.fromAsset(assetFileName)
                 .defaultPage(pageNumber)
                 .onPageChange(this)
+                .onError(new OnErrorListener() {
+                    @Override
+                    public void onError(Throwable t) {
+                        Toast.makeText(PDFViewActivity.this, "Ops, got an error: " + t.toString(), Toast.LENGTH_LONG).show();
+                    }
+                })
                 .load();
     }
 
