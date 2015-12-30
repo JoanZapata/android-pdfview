@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 
-description = 'android-pdfview'
-
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
@@ -17,6 +15,13 @@ android {
         main {
             manifest.srcFile 'AndroidManifest.xml'
             jniLibs.srcDirs = [ 'libs' ]
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
