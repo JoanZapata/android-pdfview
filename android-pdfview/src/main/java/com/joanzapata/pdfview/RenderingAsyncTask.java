@@ -59,9 +59,6 @@ class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
         while (!isCancelled()) {
 
             // Proceed all tasks
-            // Use an iterator, so make sure we get something
-            // previous use renderingTasks.get(0) could return null
-            ListIterator<RenderingTask> renderingTaksIt = renderingTasks.listIterator();
             while (!renderingTasks.isEmpty()) {
                 RenderingTask task = renderingTasks.get(0);
                 if(task != null) {
