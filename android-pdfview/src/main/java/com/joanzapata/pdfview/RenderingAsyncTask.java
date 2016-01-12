@@ -29,7 +29,6 @@ import org.vudroid.core.codec.CodecPage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
 
