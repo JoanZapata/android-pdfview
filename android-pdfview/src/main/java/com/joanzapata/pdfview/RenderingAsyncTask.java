@@ -29,6 +29,7 @@ import org.vudroid.core.codec.CodecPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
 
@@ -58,25 +59,22 @@ class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
         while (!isCancelled()) {
 
             // Proceed all tasks
-            // Use an iterator, so make sure we get something 
+            // Use an iterator, so make sure we get something
             // previous use renderingTasks.get(0) could return null
             ListIterator<RenderingTask> renderingTaksIt = renderingTasks.listIterator();
-            while (renderingTaksIt.hasNext()) {
-                RenderingTask task = renderingTaksIt.next();
-                // make sure we got a task to process
+            while (!renderingTasks.isEmpty()) {
+                RenderingTask task = renderingTasks.get(0);
                 if(task != null) {
                     PagePart part = proceed(task);
-                    // make sure proceed return something valid
-                    if(part != null) {
-                        if (renderingTaksIt.remove(task)) {
-                            publishProgress(part);
-                        } else {
-                            part.getRenderedBitmap().recycle();
-                        }
+
+                    if (renderingTasks.remove(task)) {
+                        publishProgress(part);
+                    } else {
+                        part.getRenderedBitmap().recycle();
                     }
                 }
-            }
 
+            }
             // Wait for new task, return if canceled
             if (!waitForRenderingTasks() || isCancelled()) {
                 return null;
@@ -106,7 +104,7 @@ class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
     private PagePart proceed(RenderingTask renderingTask) {
         // Maybe we should check here that renderingTask is not null
         PagePart part = null;
-        if(renderingTask != null) {
+        if (renderingTask != null) {
             this.decodeService = pdfView.getDecodeService();
             CodecPage page = decodeService.getPage(renderingTask.page); // the isse was here, renderingTask was null
             Bitmap render;
@@ -115,11 +113,12 @@ class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
                 render = page.renderBitmap(Math.round(renderingTask.width), Math.round(renderingTask.height), renderingTask.bounds);
             }
 
-            PagePart part = new PagePart(renderingTask.userPage, renderingTask.page, render, //
+            part = new PagePart(renderingTask.userPage, renderingTask.page, render, //
                     renderingTask.width, renderingTask.height, //
                     renderingTask.bounds, renderingTask.thumbnail, //
                     renderingTask.cacheOrder);
-        } 
+        }
+
         return part;
     }
 
