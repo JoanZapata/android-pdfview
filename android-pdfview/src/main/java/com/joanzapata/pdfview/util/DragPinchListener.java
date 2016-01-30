@@ -22,7 +22,7 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-
+import android.os.Handler;
 /**
  * @author Joan Zapata
  *         <p/>
@@ -53,7 +53,17 @@ public class DragPinchListener implements OnTouchListener {
     private static final float MAX_DOUBLE_CLICK_TIME = 280;
 
     private static final int POINTER1 = 0, POINTER2 = 1;
-
+    /**
+     * Handler used for perfom click (only if it's not a double tap)
+     */
+    private final Handler handlerClick = new Handler();
+    private View mView ;
+    private final Runnable runnableClick = new Runnable() {
+        @Override
+        public void run() {
+            mView.performClick();
+        }
+    };
     /** Implement this interface to receive Drag events */
     public static interface OnDragListener {
 
@@ -116,6 +126,7 @@ public class DragPinchListener implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        mView = v ;
         switch (event.getAction()) {
 
             // NORMAL CASE : FIRST POINTER DOWN
@@ -149,13 +160,17 @@ public class DragPinchListener implements OnTouchListener {
                 // Treat clicks
                 if (isClick(event, lastDownX, lastDownY, event.getX(), event.getY())) {
                     long time = System.currentTimeMillis();
-                    if (time - lastClickTime < MAX_DOUBLE_CLICK_TIME) {
-                        if (onDoubleTapListener != null) {
+                    handlerClick.removeCallbacks(runnableClick);
+                    if (onDoubleTapListener != null) {
+                        if (time - lastClickTime < MAX_DOUBLE_CLICK_TIME) {
                             onDoubleTapListener.onDoubleTap(event.getX(), event.getY());
+                            lastClickTime = 0;
+                        } else {
+                            lastClickTime = System.currentTimeMillis();
+                            handlerClick.postDelayed(runnableClick, MAX_CLICK_TIME);
                         }
-                        lastClickTime = 0;
                     } else {
-                        lastClickTime = System.currentTimeMillis();
+                        handlerClick.postDelayed(runnableClick,0);
                     }
                 }
                 break;
@@ -163,10 +178,8 @@ public class DragPinchListener implements OnTouchListener {
             // TRICKY CASE : FIRST POINTER UP WHEN SECOND STILL DOWN
             case MotionEvent.ACTION_POINTER_1_UP:
 
-                // FIXME Probably not the good value
                 dragLastX = pointer2LastX;
                 dragLastY = pointer2LastY;
-                startDrag(event);
                 state = State.DRAG;
                 break;
 

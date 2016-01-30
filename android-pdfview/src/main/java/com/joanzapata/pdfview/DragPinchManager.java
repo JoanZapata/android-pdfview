@@ -41,19 +41,31 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     private long startDragTime;
 
     private float startDragX;
+    private float startDragY;
 
     private boolean isSwipeEnabled;
+    
+    private boolean swipeVertical;
 
     public DragPinchManager(PDFView pdfView) {
         this.pdfView = pdfView;
         this.isSwipeEnabled = false;
+        this.swipeVertical = pdfView.isSwipeVertical();
         dragPinchListener = new DragPinchListener();
         dragPinchListener.setOnDragListener(this);
         dragPinchListener.setOnPinchListener(this);
         dragPinchListener.setOnDoubleTapListener(this);
         pdfView.setOnTouchListener(dragPinchListener);
     }
-
+    
+    public void enableDoubletap(boolean enableDoubletap){
+        if (enableDoubletap) {
+            dragPinchListener.setOnDoubleTapListener(this);
+        } else {
+            dragPinchListener.setOnDoubleTapListener(null);
+        }
+    }
+    
     @Override
     public void onPinch(float dr, PointF pivot) {
         float wantedZoom = pdfView.getZoom() * dr;
@@ -69,6 +81,7 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     public void startDrag(float x, float y) {
         startDragTime = System.currentTimeMillis();
         startDragX = x;
+        startDragY = y;
     }
 
     @Override
@@ -82,7 +95,12 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
     public void endDrag(float x, float y) {
         if (!isZooming()) {
             if (isSwipeEnabled) {
-                float distance = x - startDragX;
+            	float distance;
+            	if (swipeVertical)
+            		distance = y - startDragY;
+            	else
+	                distance = x - startDragX;
+            	
                 long time = System.currentTimeMillis() - startDragTime;
                 int diff = distance > 0 ? -1 : +1;
 
@@ -120,5 +138,9 @@ class DragPinchManager implements OnDragListener, OnPinchListener, OnDoubleTapLi
             pdfView.resetZoomWithAnimation();
         }
     }
+
+	public void setSwipeVertical(boolean swipeVertical) {
+		this.swipeVertical = swipeVertical;
+	}
 
 }
