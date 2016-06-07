@@ -1,5 +1,7 @@
 # This project is no longer maintained.
+### You can find a good replacement [here](https://github.com/barteksc/AndroidPdfViewer), which is a fork relying on Pdfium instead of Vudroid/MuPDF for decoding PDF files, allowing it to use the Apache License 2.0 which gives you much more freedom.
 
+----------------------
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-android--pdfview-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1332)
 
