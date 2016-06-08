@@ -42,7 +42,7 @@ public interface Constants {
     static final int MASK_ALPHA = 20;
 
     /** The size of the grid of loaded images around the current point */
-    static final int GRID_SIZE = 7;
+    static final int GRID_SIZE = 10;
 
     public interface Cache {
 
