@@ -30,3 +30,5 @@ local.properties
 
 # gradle
 .gradle
+build
+.DS_Store
