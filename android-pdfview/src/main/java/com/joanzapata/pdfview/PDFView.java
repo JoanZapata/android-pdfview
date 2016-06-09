@@ -184,6 +184,8 @@ public class PDFView extends SurfaceView {
     /** True if should scroll through pages vertically instead of horizontally */
     private boolean swipeVertical = false;
 
+    private int backgroundColor;
+
     /** Construct the initial view */
     public PDFView(Context context, AttributeSet set) {
         super(context, set);
@@ -360,7 +362,7 @@ public class PDFView extends SurfaceView {
         // abstraction of the screen position when rendering the parts.
 
         // Draws background
-        canvas.drawColor(Color.WHITE);
+        canvas.drawColor(backgroundColor);
 
         if (state != State.SHOWN) {
             return;
@@ -1005,6 +1007,8 @@ public class PDFView extends SurfaceView {
 
         private int maskAlpha = Constants.MASK_ALPHA;
 
+        private int background = Color.WHITE;
+
         private Configurator(Uri uri) {
             this.uri = uri;
         }
@@ -1049,6 +1053,11 @@ public class PDFView extends SurfaceView {
             return this;
         }
 
+        public Configurator background(int color) {
+            this.background = color;
+            return this;
+        }
+
         /**
          * @param maskColor - mask color (default Color.BLACK)
          * @param maskAlpha - alpha value in [0,255] (default 20)
@@ -1073,6 +1082,7 @@ public class PDFView extends SurfaceView {
             PDFView.this.maskPaint = new Paint();
             PDFView.this.maskPaint.setColor(maskColor);
             PDFView.this.maskPaint.setAlpha(maskAlpha);
+            PDFView.this.setPdfViewBackgroundColor(background);
             if (pageNumbers != null) {
                 PDFView.this.load(uri, onLoadCompleteListener, pageNumbers);
             } else {
@@ -1093,4 +1103,9 @@ public class PDFView extends SurfaceView {
 	public void setSwipeVertical(boolean swipeVertical) {
 		this.swipeVertical = swipeVertical;
 	}
+
+    public void setPdfViewBackgroundColor(int color) {
+        this.backgroundColor = color;
+    }
+
 }

@@ -1,10 +1,10 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 description = 'android-pdfview'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     sourceSets {
         main {
