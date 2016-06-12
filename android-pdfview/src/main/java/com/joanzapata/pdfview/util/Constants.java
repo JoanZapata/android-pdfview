@@ -58,6 +58,8 @@ public interface Constants {
 
         static final float MINIMUM_ZOOM = 1;
 
+        static final float DOUBLECLICK_ZOOM = 2.5f;
+
         /**
          * A move must be quicker than this duration and longer than
          * this distance to be considered as a quick move

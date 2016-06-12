@@ -957,8 +957,13 @@ public class PDFView extends SurfaceView {
         zoomTo(1);
     }
 
+    public void zoomWithAnimation(float toZoomLevel, PointF centerPoint) {
+        animationManager.startZoomAnimation(zoom, toZoomLevel, centerPoint);
+    }
+
     public void resetZoomWithAnimation() {
-        animationManager.startZoomAnimation(zoom, 1f);
+        PointF centerPoint = new PointF(getWidth() / 2, getHeight() / 2);
+        animationManager.startZoomAnimation(zoom, 1f, centerPoint);
     }
 
     /** Use an asset file as the pdf source */
