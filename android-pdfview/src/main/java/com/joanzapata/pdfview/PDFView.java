@@ -24,9 +24,11 @@ import android.graphics.Paint.Style;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 import com.joanzapata.pdfview.exception.FileNotFoundException;
 import com.joanzapata.pdfview.listener.OnDrawListener;
+import com.joanzapata.pdfview.listener.OnErrorListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.joanzapata.pdfview.model.PagePart;
@@ -58,7 +60,7 @@ import static com.joanzapata.pdfview.util.Constants.Cache.CACHE_SIZE;
  *         - DocumentPage = A page of the PDF document.
  *         - UserPage = A page as defined by the user.
  *         By default, they're the same. But the user can change the pages order
- *         using {@link #load(Uri, OnLoadCompleteListener, int[])}. In this
+ *         using {@link #load(Uri, OnLoadCompleteListener, OnErrorListener, int[])}. In this
  *         particular case, a userPage of 5 can refer to a documentPage of 17.
  */
 public class PDFView extends SurfaceView {
@@ -148,6 +150,8 @@ public class PDFView extends SurfaceView {
     /** Call back object to call when the PDF is loaded */
     private OnLoadCompleteListener onLoadCompleteListener;
 
+    private OnErrorListener onErrorListener;
+
     /** Call back object to call when the page has changed */
     private OnPageChangeListener onPageChangeListener;
 
@@ -209,11 +213,11 @@ public class PDFView extends SurfaceView {
         setWillNotDraw(false);
     }
 
-    private void load(Uri uri, OnLoadCompleteListener listener) {
-        load(uri, listener, null);
+    private void load(Uri uri, OnLoadCompleteListener listener, OnErrorListener onErrorListener) {
+        load(uri, listener, onErrorListener, null);
     }
 
-    private void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, int[] userPages) {
+    private void load(Uri uri, OnLoadCompleteListener onLoadCompleteListener, OnErrorListener onErrorListener, int[] userPages) {
 
         if (!recycled) {
             throw new IllegalStateException("Don't call load on a PDF View without recycling it first.");
@@ -227,6 +231,7 @@ public class PDFView extends SurfaceView {
         }
 
         this.onLoadCompleteListener = onLoadCompleteListener;
+        this.onErrorListener = onErrorListener;
 
         // Start decoding document
         decodingAsyncTask = new DecodingAsyncTask(uri, this);
@@ -315,6 +320,8 @@ public class PDFView extends SurfaceView {
     @Override
     protected void onDetachedFromWindow() {
         recycle();
+
+        super.onDetachedFromWindow();
     }
 
     @Override
@@ -657,6 +664,14 @@ public class PDFView extends SurfaceView {
         }
     }
 
+    public void loadError(Throwable t) {
+        if (this.onErrorListener != null) {
+            this.onErrorListener.onError(t);
+        } else {
+            Log.e("PDFView", "load pdf error", t);
+        }
+    }
+
     /**
      * Called when a rendering task is over and
      * a PagePart has been freshly created.
@@ -993,6 +1008,8 @@ public class PDFView extends SurfaceView {
 
         private OnLoadCompleteListener onLoadCompleteListener;
 
+        private OnErrorListener onErrorListener;
+
         private OnPageChangeListener onPageChangeListener;
 
         private int defaultPage = 1;
@@ -1031,6 +1048,11 @@ public class PDFView extends SurfaceView {
 
         public Configurator onLoad(OnLoadCompleteListener onLoadCompleteListener) {
             this.onLoadCompleteListener = onLoadCompleteListener;
+            return this;
+        }
+
+        public Configurator onError(OnErrorListener onErrorListener) {
+            this.onErrorListener = onErrorListener;
             return this;
         }
 
@@ -1074,9 +1096,9 @@ public class PDFView extends SurfaceView {
             PDFView.this.maskPaint.setColor(maskColor);
             PDFView.this.maskPaint.setAlpha(maskAlpha);
             if (pageNumbers != null) {
-                PDFView.this.load(uri, onLoadCompleteListener, pageNumbers);
+                PDFView.this.load(uri, onLoadCompleteListener, onErrorListener, pageNumbers);
             } else {
-                PDFView.this.load(uri, onLoadCompleteListener);
+                PDFView.this.load(uri, onLoadCompleteListener, onErrorListener);
             }
         }
 

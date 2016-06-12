@@ -18,43 +18,62 @@
  */
 package com.joanzapata;
 
-import android.content.Intent;
-import android.util.Log;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.googlecode.androidannotations.annotations.*;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.joanzapata.pdfview.PDFView;
+import com.joanzapata.pdfview.listener.OnErrorListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.joanzapata.pdfview.sample.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 import static java.lang.String.format;
 
-@EActivity(R.layout.activity_main)
-@OptionsMenu(R.menu.actionbar)
-public class PDFViewActivity extends SherlockActivity implements OnPageChangeListener {
+public class PDFViewActivity extends AppCompatActivity implements OnPageChangeListener {
 
     public static final String SAMPLE_FILE = "sample.pdf";
 
     public static final String ABOUT_FILE = "about.pdf";
 
-    @ViewById
-    PDFView pdfView;
+    @Bind(R.id.pdfView) PDFView pdfView;
 
-    @NonConfigurationInstance
     String pdfName = SAMPLE_FILE;
 
-    @NonConfigurationInstance
     Integer pageNumber = 1;
 
-    @AfterViews
-    void afterViews() {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         display(pdfName, false);
     }
 
-    @OptionsItem
-    public void about() {
-        if (!displaying(ABOUT_FILE))
-            display(ABOUT_FILE, true);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                if (!displaying(ABOUT_FILE)) {
+                    display(ABOUT_FILE, true);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void display(String assetFileName, boolean jumpToFirstPage) {
@@ -64,6 +83,12 @@ public class PDFViewActivity extends SherlockActivity implements OnPageChangeLis
         pdfView.fromAsset(assetFileName)
                 .defaultPage(pageNumber)
                 .onPageChange(this)
+                .onError(new OnErrorListener() {
+                    @Override
+                    public void onError(Throwable t) {
+                        Toast.makeText(PDFViewActivity.this, "Ops, got an error: " + t.toString(), Toast.LENGTH_LONG).show();
+                    }
+                })
                 .load();
     }
 

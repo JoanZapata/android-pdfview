@@ -17,6 +17,7 @@ local.properties
 
 # Android Studio
 .idea
+build/
 */local.properties
 */out
 */build/**
