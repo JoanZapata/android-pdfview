@@ -60,15 +60,17 @@ class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
             // Proceed all tasks
             while (!renderingTasks.isEmpty()) {
                 RenderingTask task = renderingTasks.get(0);
-                PagePart part = proceed(task);
+                if(task != null) {
+                    PagePart part = proceed(task);
 
-                if (renderingTasks.remove(task)) {
-                    publishProgress(part);
-                } else {
-                    part.getRenderedBitmap().recycle();
+                    if (renderingTasks.remove(task)) {
+                        publishProgress(part);
+                    } else {
+                        part.getRenderedBitmap().recycle();
+                    }
                 }
-            }
 
+            }
             // Wait for new task, return if canceled
             if (!waitForRenderingTasks() || isCancelled()) {
                 return null;
@@ -96,18 +98,22 @@ class RenderingAsyncTask extends AsyncTask<Void, PagePart, Void> {
     }
 
     private PagePart proceed(RenderingTask renderingTask) {
-        this.decodeService = pdfView.getDecodeService();
-        CodecPage page = decodeService.getPage(renderingTask.page);
-        Bitmap render;
+        // Maybe we should check here that renderingTask is not null
+        PagePart part = null;
+        if (renderingTask != null) {
+            this.decodeService = pdfView.getDecodeService();
+            CodecPage page = decodeService.getPage(renderingTask.page); // the isse was here, renderingTask was null
+            Bitmap render;
 
-        synchronized (decodeService.getClass()) {
-            render = page.renderBitmap(Math.round(renderingTask.width), Math.round(renderingTask.height), renderingTask.bounds);
+            synchronized (decodeService.getClass()) {
+                render = page.renderBitmap(Math.round(renderingTask.width), Math.round(renderingTask.height), renderingTask.bounds);
+            }
+
+            part = new PagePart(renderingTask.userPage, renderingTask.page, render, //
+                    renderingTask.width, renderingTask.height, //
+                    renderingTask.bounds, renderingTask.thumbnail, //
+                    renderingTask.cacheOrder);
         }
-
-        PagePart part = new PagePart(renderingTask.userPage, renderingTask.page, render, //
-                renderingTask.width, renderingTask.height, //
-                renderingTask.bounds, renderingTask.thumbnail, //
-                renderingTask.cacheOrder);
 
         return part;
     }
