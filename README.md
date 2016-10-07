@@ -9,6 +9,10 @@
 
 **Android PDFView** is a library which provides a fast PDFView component for Android, with ```animations```, ```gestures```, and ```zoom```. It's based on [VuDroid](https://code.google.com/p/vudroid/) for decoding the PDF file.
 
+# Minimum Requirements
+Maven 3.1.1 or above
+
+
 # Get it
 
 Android PDFView is **available in Maven Central**.
