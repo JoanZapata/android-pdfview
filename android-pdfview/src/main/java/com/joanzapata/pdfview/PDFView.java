@@ -19,10 +19,16 @@
 package com.joanzapata.pdfview;
 
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
-import android.os.AsyncTask;
+import com.joanzapata.pdfview.util.AsyncTask;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import com.joanzapata.pdfview.exception.FileNotFoundException;
@@ -62,8 +68,6 @@ import static com.joanzapata.pdfview.util.Constants.Cache.CACHE_SIZE;
  *         particular case, a userPage of 5 can refer to a documentPage of 17.
  */
 public class PDFView extends SurfaceView {
-
-    private static final String TAG = PDFView.class.getSimpleName();
 
     /** Rendered parts go to the cache manager */
     private CacheManager cacheManager;
